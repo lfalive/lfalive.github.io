@@ -141,7 +141,7 @@
       <link href="2020/05/30/golden-hour/"/>
       <url>2020/05/30/golden-hour/</url>
       
-        <content type="html"><![CDATA[<p>夏天到了，三年之期，等到了Kygo个人第三张专辑《Golden Hour》。</p>    <div id="aplayer-kzzqXjum" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="0046vMjV0I6lBT" data-server="tencent" data-type="album" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"    ></div><p><img src="https://img.lfalive.top/golden-hour/0.jpg"></p><p>首首精品，我愿称之为神专，《I‘ll Wait》这首我吹爆。除此之外，个人还比较喜欢Tropical House风的《Beautiful》《Could You Love Me》，人声切片的《Like It Is》《Freedom》《The Truth》。</p><p><img src="https://img.lfalive.top/golden-hour/1.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/2.jpg"></p><p>顺便放一个歌单，我收藏的Kygo作品。</p>    <div id="aplayer-NspflcCA" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="4926452499" data-server="tencent" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-order="random"    ></div><p><img src="https://img.lfalive.top/golden-hour/3.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/4.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/5.jpg"></p>]]></content>
+        <content type="html"><![CDATA[<p>夏天到了，三年之期，等到了Kygo个人第三张专辑《Golden Hour》。</p>    <div id="aplayer-pLWGymNg" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="0046vMjV0I6lBT" data-server="tencent" data-type="album" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"    ></div><p><img src="https://img.lfalive.top/golden-hour/0.jpg"></p><p>首首精品，我愿称之为神专，《I‘ll Wait》这首我吹爆。除此之外，个人还比较喜欢Tropical House风的《Beautiful》《Could You Love Me》，人声切片的《Like It Is》《Freedom》《The Truth》。</p><p><img src="https://img.lfalive.top/golden-hour/1.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/2.jpg"></p><p>顺便放一个歌单，我收藏的Kygo作品。</p>    <div id="aplayer-GsEvQRtx" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="4926452499" data-server="tencent" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-order="random"    ></div><p><img src="https://img.lfalive.top/golden-hour/3.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/4.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/5.jpg"></p>]]></content>
       
       
       <categories>
@@ -418,6 +418,35 @@
         <tags>
             
             <tag> 真探 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>这个博客的诞生历程</title>
+      <link href="2018/08/29/hello-world/"/>
+      <url>2018/08/29/hello-world/</url>
+      
+        <content type="html"><![CDATA[<h2 id="2021-4-8更新"><a href="#2021-4-8更新" class="headerlink" title="2021.4.8更新"></a>2021.4.8更新</h2><p><a href="https://butterfly.js.org/">Butterfly主题文档</a></p><p>2021年3月重置博客，更新hexo和主题版本，多了很多新特性，同时也搞了一些魔改。</p><p><a href="https://blog.zhheo.com/p/2e6bbbd0.html">Twikoo评论系统配置教程（基于腾讯云开发）</a></p><p><a href="https://butterfly.js.org/posts/507c070f/#%E9%97%9C%E9%96%89-asset-inject">Butterfly添加全局吸底Aplayer教程</a></p><h2 id="2020-5-8更新"><a href="#2020-5-8更新" class="headerlink" title="2020.5.8更新"></a>2020.5.8更新</h2><p>博客迁移了，使用了hexo，感觉功能更多了，使用主题为<a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a>，功能多，界面好看。</p><p>安装好主题之后，按照<a href="https://jerryc.me/posts/21cfbf15/">作者的文档</a>做了一些配置，也就是一些基本配置 ，头图、评论系统、统计系统等，那些花里胡哨的点击效果就没有搞了。</p><p>然后访问速度还是比较慢，所以这次把图都放到了七牛云，之后写一下具体步骤。</p><h2 id="原博客介绍"><a href="#原博客介绍" class="headerlink" title="原博客介绍"></a>原博客介绍</h2><h3 id="关于Jekyll"><a href="#关于Jekyll" class="headerlink" title="关于Jekyll"></a>关于Jekyll</h3><p>摘自百度百科：Jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和WordPress又有很大的不同，原因是Jekyll只是一个生成静态网页的工具，不需要数据库支持。但是可以配合第三方服务,例如Disqus。最关键的是Jekyll可以免费部署在Github上，而且可以绑定自己的域名。</p><p>最后决定用Github Pages和Jkeyll简单搭建一下。  </p><h3 id="关于Github-Pages"><a href="#关于Github-Pages" class="headerlink" title="关于Github Pages"></a>关于Github Pages</h3><p>用途多多，网上资料也是一大堆。</p><p><a href="https://pages.github.com/">Github Pages官网</a></p><h3 id="关于主题"><a href="#关于主题" class="headerlink" title="关于主题"></a>关于主题</h3><p>首先需要找一个自己喜欢的主题。 因为初次尝试，不熟悉Jekyll的目录结构，所以选了一个中文文档写得很详细的主题，也很漂亮，叫做“H2O”。 </p><p><a href="https://github.com/kaeyleo/jekyll-theme-H2O">该主题原项目</a></p><p><a href="http://jekyllthemes.org/">更多主题</a></p><h3 id="关于本地预览"><a href="#关于本地预览" class="headerlink" title="关于本地预览"></a>关于本地预览</h3><p>不搭建本地环境则不能实现本地预览，如果只是想使用主题，而不需要本地预览，可以跳过搭建本地环境的过程。关于本地环境的搭建，也有很多教程的。 一切从简，我也没有搭建本地环境。</p><h3 id="关于博客配置"><a href="#关于博客配置" class="headerlink" title="关于博客配置"></a>关于博客配置</h3><p>模板有了，接下来就是修改模板中的默认信息为自己的信息了。 可以直接Fork主题模板到自己Github库里，然后clone到本地修改配置文件，再一次次push。 也可以下载模板到本地后，修改好配置文件再push到自己库里吧。</p><p>配置文件一般为<code>_config.yml</code>，我也是对照着文档慢慢修改的。每个主题的拥有的功能也不尽相同，通过了解文档，我修改了个人信息、头图以及一些设置。</p><h3 id="关于写文章"><a href="#关于写文章" class="headerlink" title="关于写文章"></a>关于写文章</h3><p>Markdown是个好东西。不了解语法的话，也还是自己找资料吧！在本地写好后，push一下就可以了，非常方便。  </p><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="http://liaokeyu.com/">主题作者博客</a></p><p><a href="https://blog.csdn.net/qq_27888241/article/details/77104922">使用Jekyll + GitHub Pages搭建个人博客</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> blog </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> blog </tag>
+            
+            <tag> Jekyll </tag>
+            
+            <tag> hexo </tag>
             
         </tags>
       
