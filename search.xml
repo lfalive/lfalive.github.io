@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Java——数组</title>
+      <link href="2021/04/16/Learn-java-3/"/>
+      <url>2021/04/16/Learn-java-3/</url>
+      
+        <content type="html"><![CDATA[<h2 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明并创建一个数组</span></span><br><span class="line">dataType[] arrayRefVa = <span class="keyword">new</span> dataType[arraySize];</span><br></pre></td></tr></table></figure><ul><li>通过索引访问，索引从0开始。</li><li>长度固定，一旦创建，不可改变。</li><li>可以是任何类型，但不允许混合类型。</li><li>数组变量属于引用类型，数组也可以看成是对象，数组中的每个元素相当于该对象的成员变量。</li><li>数组本身就是对象，Java中对象是在堆中的，因此数组无论保存原始类型还是其他对象类型，<strong>数组对象本身是在堆中的</strong>。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Java——流程控制和方法</title>
       <link href="2021/04/07/Learn-java-2/"/>
       <url>2021/04/07/Learn-java-2/</url>
@@ -141,7 +166,7 @@
       <link href="2020/05/30/golden-hour/"/>
       <url>2020/05/30/golden-hour/</url>
       
-        <content type="html"><![CDATA[<p>夏天到了，三年之期，等到了Kygo个人第三张专辑《Golden Hour》。</p>    <div id="aplayer-FAucuUak" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="0046vMjV0I6lBT" data-server="tencent" data-type="album" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"    ></div><p><img src="https://img.lfalive.top/golden-hour/0.jpg"></p><p>首首精品，我愿称之为神专，《I‘ll Wait》这首我吹爆。除此之外，个人还比较喜欢Tropical House风的《Beautiful》《Could You Love Me》，人声切片的《Like It Is》《Freedom》《The Truth》。</p><p><img src="https://img.lfalive.top/golden-hour/1.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/2.jpg"></p><p>顺便放一个歌单，我收藏的Kygo作品。</p>    <div id="aplayer-rYsTgebA" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="4926452499" data-server="tencent" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-order="random"    ></div><p><img src="https://img.lfalive.top/golden-hour/3.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/4.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/5.jpg"></p>]]></content>
+        <content type="html"><![CDATA[<p>夏天到了，三年之期，等到了Kygo个人第三张专辑《Golden Hour》。</p>    <div id="aplayer-kUuAomdC" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="0046vMjV0I6lBT" data-server="tencent" data-type="album" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"    ></div><p><img src="https://img.lfalive.top/golden-hour/0.jpg"></p><p>首首精品，我愿称之为神专，《I‘ll Wait》这首我吹爆。除此之外，个人还比较喜欢Tropical House风的《Beautiful》《Could You Love Me》，人声切片的《Like It Is》《Freedom》《The Truth》。</p><p><img src="https://img.lfalive.top/golden-hour/1.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/2.jpg"></p><p>顺便放一个歌单，我收藏的Kygo作品。</p>    <div id="aplayer-qyPNfjwH" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="4926452499" data-server="tencent" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-order="random"    ></div><p><img src="https://img.lfalive.top/golden-hour/3.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/4.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/5.jpg"></p>]]></content>
       
       
       <categories>
