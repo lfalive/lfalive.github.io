@@ -59,7 +59,8 @@
   isPhotoFigcaption: false,
   islazyload: false,
   isanchor: true
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java——基础',
   isPost: true,
   isHome: false,
   isHighlightShrink: false,
@@ -472,6 +473,29 @@ var pjax = new Pjax({
   scrollRestoration: false
 })
 
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener toc scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
 document.addEventListener('pjax:complete', function () {
   window.refreshFn()
 
@@ -505,26 +529,6 @@ document.addEventListener('pjax:complete', function () {
   typeof Prism === 'object' && Prism.highlightAll()
 
   typeof preloader === 'object' && preloader.endLoading()
-})
-
-
-document.addEventListener('pjax:send', function () {
-  typeof preloader === 'object' && preloader.initLoading()
-  
-  if (window.aplayers) {
-    for (let i = 0; i < window.aplayers.length; i++) {
-      if (!window.aplayers[i].options.fixed) {
-        window.aplayers[i].destroy()
-      }
-    }
-  }
-
-  typeof typed === 'object' && typed.destroy()
-
-  //reset readmode
-  const $bodyClassList = document.body.classList
-  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
-
 })
 
 document.addEventListener('pjax:error', (e) => {
