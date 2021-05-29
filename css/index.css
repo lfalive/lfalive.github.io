@@ -4634,6 +4634,9 @@ _:future,
   content: '';
   line-height: 0.42em;
 }
+#article-container > :last-child {
+  margin-bottom: 0 !important;
+}
 #post .tag_share .post-meta__tag-list {
   display: inline-block;
 }
