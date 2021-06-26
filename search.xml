@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>Java——多线程</title>
+      <link href="2021/06/24/Learn-java-thread/"/>
+      <url>2021/06/24/Learn-java-thread/</url>
+      
+        <content type="html"><![CDATA[<h1 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h1><p><a href="https://www.kuangstudy.com/">狂神说java官网</a></p><p><a href="https://www.bilibili.com/video/BV12J41137hu">B站视频链接</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>接触PT的一些经历</title>
+      <link href="2021/06/17/PT/"/>
+      <url>2021/06/17/PT/</url>
+      
+        <content type="html"><![CDATA[<h2 id="什么是PT"><a href="#什么是PT" class="headerlink" title="什么是PT"></a>什么是PT</h2><p>Private Tracker。</p><blockquote><ol><li>PT 本质上还是<strong>基于 BitTorrent 协议的一种 P2P 下载</strong>，这点跟 BT 是一样</li><li>PT 是通过一个**私有的 Tracker <a href="https://www.smzdm.com/fenlei/fuwuqi/">服务器</a>**认证，在小范围内进行通信以及下载</li><li>在 Private Tracker 服务器上对用户的下载量、上传量以及下载上传时间进行<strong>数据统计</strong></li></ol></blockquote><p>更多关于PT的详细介绍，可以阅读<a href="https://www.jianshu.com/p/3daf90e9d241">Private Tracker（PT）新手使用小记</a>和<a href="https://post.smzdm.com/p/a3gvvddr/">PT基本概念+生存指南</a>。</p><h2 id="蝴蝶时期：0下载"><a href="#蝴蝶时期：0下载" class="headerlink" title="蝴蝶时期：0下载"></a>蝴蝶时期：0下载</h2><img src="https://img.lfalive.top/PT/HUDPT.jpg" style="zoom:67%;" /><p>PT的关键词就是Private，所以我进了蝴蝶，毕竟高校PT站至少应该都是对自己本校学生开放的吧……</p><p>用户太少，资源太少，导致很快我就对蝴蝶失去了兴趣。</p><h2 id="百川时期：不会做种"><a href="#百川时期：不会做种" class="headerlink" title="百川时期：不会做种"></a>百川时期：不会做种</h2><p>疫情期间，在家的时候需要下载一些学习资料，几经周折又摸到了PT。但是大部分高校PT都是教育网IPV6独享，在家无法访问。最后找到了哈工大的百川，可以非教育网访问。</p><p>这个阶段，我对PT还没有概念，将PT当作传统的资源站，只管下载。尽管发现我的上传量偶尔会增加，但是也不明白其中的用户规则。至今我的百川分享率还小于1。</p><p><img src="https://img.lfalive.top/PT/hitpt.JPG"></p><h2 id="北邮人时期：学会做种"><a href="#北邮人时期：学会做种" class="headerlink" title="北邮人时期：学会做种"></a>北邮人时期：学会做种</h2><p>时隔八个月回到学校后，就可以访问教育网only的PT站了。这个阶段我上了北邮人，还是使用μtorrent客户端。</p><p><img src="https://img.lfalive.top/PT/byrpt.JPG"></p><p>接触到种子促销、做种等概念后，我有事无事就会挂着客户端，也会去蹲一些热门的种子，尽早下载并开始做种。</p><h2 id="北洋园时期：进阶技巧"><a href="#北洋园时期：进阶技巧" class="headerlink" title="北洋园时期：进阶技巧"></a>北洋园时期：进阶技巧</h2><p>临近毕业，我开始意识到，失去校园网，就失去了北邮人的访问权限，于是开始寻找非教育网可以访问的PT站点，这才注册了北洋园。</p><p><img src="https://img.lfalive.top/PT/TJUPT.JPG"></p><p>和北邮人相比，北洋园有官方组，更新的剧集资源更多，并且分天大校外IPv4/IPv6/天大校内IPv4不同通道。另一方面，北洋园正在推行H&amp;R规则，为了之后站点从分享率（Ratio）考核模式转变为无视分享率（RatioLess）模式。总而言之，两个站点有很多不同之处。</p><p>这个时候，我常常下载两个站点共有的一些资源，同时在两个站点做种。</p><h3 id="双栈做种"><a href="#双栈做种" class="headerlink" title="双栈做种"></a>双栈做种</h3><p>默认打开客户端，只会上报IPV6地址，仅能和IPV6用户交流。实现双栈做种后，即可和校外IPV4用户交流。设置双栈做种时，先在本机网络适配器中关闭IPV6协议，然后ping一下tracker服务器，得到一个IPV4地址，将这个IPV4地址和tracker服务器域名写进系统的hosts文件，再开启IPV6协议即可。</p><img src="https://img.lfalive.top/PT/double.JPG" style="zoom:80%;" /><h3 id="RSS订阅"><a href="#RSS订阅" class="headerlink" title="RSS订阅"></a>RSS订阅</h3><p>刚使用TJUPT的时候，总是抢不到热门免费资源，做种机会不多。这时我了解到RSS技术，提供一种实时、高效、安全、低成本的信息发布渠道。可以参考<a href="http://www.ptyqm.com/1235.html">从此“不再”登陆PT站！RSS订阅+qbittorrent自动下载使用教程</a>。</p><p>目前我接触的PT站点都是支持RSS订阅的，在网站中可以很方便地按照特定规则筛选得到RSS链接。</p><img src="https://img.lfalive.top/PT/RSS_get.JPG" style="zoom:67%;" /><p>同时我将客户端换为qbittorrent 4.3.5，更好看，功能更丰富。当然，μtorrent也是支持RSS订阅的。开启自动更新和自动下载，就差不多大功告成。</p><img src="https://img.lfalive.top/PT/RSS_Setting.JPG" style="zoom:80%;" /><p>最后配置一下下载目录等规则，即可自动化下载储存连载剧集，十分方便。</p><img src="https://img.lfalive.top/PT/RSS.JPG" style="zoom:67%;" /><h2 id="下一个阶段？"><a href="#下一个阶段？" class="headerlink" title="下一个阶段？"></a>下一个阶段？</h2><p>我试图继续探索更多的高效PT，例如南洋、葡萄、蒲公英，无奈处处碰壁。</p><img src="https://img.lfalive.top/PT/nanyang.JPG" style="zoom:80%;" /><img src="https://img.lfalive.top/PT/putao.JPG" style="zoom:80%;" /><p><img src="https://img.lfalive.top/PT/%E8%92%B2%E5%85%AC%E8%8B%B1.JPG"></p><p>如果还有下一个阶段，应该是要跳出高校PT，进入其他PT站，并且拥有更高的网络带宽和更大的硬盘容量吧。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> PT </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> PT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Java——基础</title>
       <link href="2021/03/30/Learn-java-base/"/>
       <url>2021/03/30/Learn-java-base/</url>
@@ -116,7 +166,7 @@
       <link href="2020/05/30/golden-hour/"/>
       <url>2020/05/30/golden-hour/</url>
       
-        <content type="html"><![CDATA[<p>夏天到了，三年之期，等到了Kygo个人第三张专辑《Golden Hour》。</p>    <div id="aplayer-EvfeqCbe" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="0046vMjV0I6lBT" data-server="tencent" data-type="album" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"    ></div><p><img src="https://img.lfalive.top/golden-hour/0.jpg"></p><p>首首精品，我愿称之为神专，《I‘ll Wait》这首我吹爆。除此之外，个人还比较喜欢Tropical House风的《Beautiful》《Could You Love Me》，人声切片的《Like It Is》《Freedom》《The Truth》。</p><p><img src="https://img.lfalive.top/golden-hour/1.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/2.jpg"></p><p>顺便放一个歌单，我收藏的Kygo作品。</p>    <div id="aplayer-jikfZFSl" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="4926452499" data-server="tencent" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-order="random"    ></div><p><img src="https://img.lfalive.top/golden-hour/3.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/4.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/5.jpg"></p>]]></content>
+        <content type="html"><![CDATA[<p>夏天到了，三年之期，等到了Kygo个人第三张专辑《Golden Hour》。</p>    <div id="aplayer-DUQqrLqK" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="0046vMjV0I6lBT" data-server="tencent" data-type="album" data-mode="circulation" data-autoplay="true" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"    ></div><p><img src="https://img.lfalive.top/golden-hour/0.jpg"></p><p>首首精品，我愿称之为神专，《I‘ll Wait》这首我吹爆。除此之外，个人还比较喜欢Tropical House风的《Beautiful》《Could You Love Me》，人声切片的《Like It Is》《Freedom》《The Truth》。</p><p><img src="https://img.lfalive.top/golden-hour/1.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/2.jpg"></p><p>顺便放一个歌单，我收藏的Kygo作品。</p>    <div id="aplayer-icedDMte" class="aplayer aplayer-tag-marker meting-tag-marker"         data-id="4926452499" data-server="tencent" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86" data-order="random"    ></div><p><img src="https://img.lfalive.top/golden-hour/3.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/4.jpg"></p><p><img src="https://img.lfalive.top/golden-hour/5.jpg"></p>]]></content>
       
       
       <categories>
@@ -419,9 +469,9 @@
             
             <tag> blog </tag>
             
-            <tag> hexo </tag>
-            
             <tag> Jekyll </tag>
+            
+            <tag> hexo </tag>
             
         </tags>
       
