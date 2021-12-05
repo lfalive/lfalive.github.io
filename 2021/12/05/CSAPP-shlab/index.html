@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CSAPP实验——shell lab | Lfalive's Blog</title><meta name="keywords" content="CSAPP"><meta name="author" content="Lfalive"><meta name="copyright" content="Lfalive"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="CSAPP实验之shell lab学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP实验——shell lab">
+<meta property="og:url" content="https://lfalive.github.io/2021/12/05/CSAPP-shlab/index.html">
+<meta property="og:site_name" content="Lfalive&#39;s Blog">
+<meta property="og:description" content="CSAPP实验之shell lab学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.lfalive.top/CSAPP-datalab/cover.jpeg">
+<meta property="article:published_time" content="2021-12-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-05T08:32:01.774Z">
+<meta property="article:author" content="Lfalive">
+<meta property="article:tag" content="CSAPP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.lfalive.top/CSAPP-datalab/cover.jpeg"><link rel="shortcut icon" href="https://img.lfalive.top/favicon.png"><link rel="canonical" href="https://lfalive.github.io/2021/12/05/CSAPP-shlab/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?48f01bc27372d79626fe3a9bbfad5af4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":30,"languages":{"author":"作者: Lfalive","link":"链接: ","source":"来源: Lfalive's Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CSAPP实验——shell lab',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-05 16:32:01'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://img.lfalive.top/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.lfalive.top/CSAPP-datalab/cover.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lfalive's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP实验——shell lab</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-12-04T16:00:00.000Z" title="发表于 2021-12-05 00:00:00">2021-12-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-05T08:32:01.774Z" title="更新于 2021-12-05 16:32:01">2021-12-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CSAPP/">CSAPP</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CSAPP实验——shell lab"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="官网"><a href="#官网" class="headerlink" title="官网"></a>官网</h2><p><a target="_blank" rel="noopener" href="http://csapp.cs.cmu.edu/3e/labs.html">http://csapp.cs.cmu.edu/3e/labs.html</a></p>
+<blockquote>
+<p>Students implement simple logical, two’s complement, and floating point functions, but using a highly restricted subset of C. For example, they might be asked to compute the absolute value of a number using only bit-level operations and straightline code. This lab helps students understand the bit-level representations of C data types and the bit-level behavior of the operations on data.</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/89224358">CSAPP实验之shell lab</a></p>
+<p>实验要求和可选辅助函数见参考链接。</p>
+<h2 id="void-eval-char-cmdline"><a href="#void-eval-char-cmdline" class="headerlink" title="void eval(char *cmdline)"></a>void eval(char *cmdline)</h2><p>解析并执行命令。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">eval</span><span class="params">(<span class="keyword">char</span> *cmdline)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">char</span> *argv[MAXARGS];</span><br><span class="line">	<span class="keyword">char</span> buf[MAXLINE];</span><br><span class="line">	<span class="keyword">int</span> bg;</span><br><span class="line">	<span class="keyword">int</span> state;</span><br><span class="line">	<span class="keyword">pid_t</span> pid;</span><br><span class="line">	<span class="keyword">sigset_t</span> mask_all, mask_one, prev;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 在函数内部加阻塞set</span></span><br><span class="line">	sigfillset(&amp;mask_all);</span><br><span class="line">	sigemptyset(&amp;mask_one);</span><br><span class="line">	sigaddset(&amp;mask_one, SIGCHLD);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">strcpy</span>(buf, cmdline);</span><br><span class="line">	bg = parseline(buf, argv);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 没有参数就退出</span></span><br><span class="line">	<span class="keyword">if</span> (argv[<span class="number">0</span>] == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 如果不是内置指令</span></span><br><span class="line">	<span class="keyword">if</span> (!builtin_cmd(argv)) &#123;</span><br><span class="line">		<span class="comment">// 为了避免父进程运行到addjob之前子进程就退出了，所以在fork子进程前阻塞sigchld信号，addjob后解除</span></span><br><span class="line">		sigprocmask(SIG_BLOCK, &amp;mask_one, &amp;prev);</span><br><span class="line">		<span class="keyword">if</span> ((pid = fork()) == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="comment">// 子进程继承了父进程的阻塞向量，也要解除阻塞，避免收不到它本身的子进程的信号</span></span><br><span class="line">			sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">			<span class="comment">// 改进程组与自己pid一样</span></span><br><span class="line">			<span class="keyword">if</span> (setpgid(<span class="number">0</span>, <span class="number">0</span>) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">				perror(<span class="string">&quot;SETPGID ERROR&quot;</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (execve(argv[<span class="number">0</span>], argv, environ) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%s: Command not found\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 正常运行execve函数会替换内存，不会返回/退出，所以必须要加exit，否则会一直运行下去，子进程会开始运行父进程的代码</span></span><br><span class="line">			<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 父进程</span></span><br><span class="line">		state = bg ? BG : FG;</span><br><span class="line">		<span class="comment">// 依然是加塞，阻塞所有信号</span></span><br><span class="line">		sigprocmask(SIG_BLOCK, &amp;mask_all, <span class="literal">NULL</span>);</span><br><span class="line">		addjob(jobs, pid, state, cmdline);</span><br><span class="line">		sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 后台任务则打印，前台则等待子进程结束</span></span><br><span class="line">		<span class="keyword">if</span> (state == FG)</span><br><span class="line">			waitfg(pid);</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			sigprocmask(SIG_BLOCK, &amp;mask_all, <span class="literal">NULL</span>); <span class="comment">// 操纵全局变量，阻塞信号</span></span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;[%d] (%d) %s&quot;</span>, pid2jid(pid), pid, cmdline);</span><br><span class="line">		&#125;</span><br><span class="line">		sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="int-builtin-cmd-char-argv"><a href="#int-builtin-cmd-char-argv" class="headerlink" title="int builtin_cmd(char **argv)"></a>int builtin_cmd(char **argv)</h2><p>检测命令是否为内置命令<code>quit</code>、<code>fg</code>、<code>bg</code>、<code>jobs</code>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">builtin_cmd</span><span class="params">(<span class="keyword">char</span> **argv)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">sigset_t</span> mask_all, prev;</span><br><span class="line">   sigfillset(&amp;mask_all);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 判断是不是内置函数，不是就返回，注意内置命令有要继续操作的一定要返回1</span></span><br><span class="line">   <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">&quot;quit&quot;</span>))</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">   <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">&quot;jobs&quot;</span>)) &#123;</span><br><span class="line">      sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev);</span><br><span class="line">      listjobs(jobs);</span><br><span class="line">      sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">&quot;bg&quot;</span>) || !<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">&quot;fg&quot;</span>)) &#123;</span><br><span class="line">      do_bgfg(argv);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">&quot;&amp;&quot;</span>))<span class="comment">// 对单独的&amp;不处理</span></span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;     <span class="comment">/* not a builtin command */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="void-do-bgfg-char-argv"><a href="#void-do-bgfg-char-argv" class="headerlink" title="void do_bgfg(char **argv)"></a>void do_bgfg(char **argv)</h2><p>实现<code>bg</code>、<code>fg</code>命令。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_bgfg</span><span class="params">(<span class="keyword">char</span> **argv)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 没有参数，其实应该也加上判断参数个数的语句才比较完整</span></span><br><span class="line">   <span class="keyword">if</span> (argv[<span class="number">1</span>] == <span class="literal">NULL</span>) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%s command requires PID or %%jobid argument\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">int</span> id;</span><br><span class="line">   <span class="keyword">sigset_t</span> mask_all, prev;</span><br><span class="line">   sigfillset(&amp;mask_all);</span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">job_t</span> *<span class="title">job</span>;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// bg %5 和bg 5不一样,一个是对一个作业操作，另一个是对进程操作，而job代表了一个进程组。</span></span><br><span class="line">   <span class="comment">// 根据tshref的样例输出看有多少种情况</span></span><br><span class="line">   <span class="keyword">if</span> (<span class="built_in">sscanf</span>(argv[<span class="number">1</span>], <span class="string">&quot;%%%d&quot;</span>, &amp;id) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev);</span><br><span class="line">      job = getjobjid(jobs, id);</span><br><span class="line">      <span class="keyword">if</span> (job == <span class="literal">NULL</span>) &#123;</span><br><span class="line">         <span class="built_in">printf</span>(<span class="string">&quot;%%%d: No such job\n&quot;</span>, id);</span><br><span class="line">         sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">         <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">sscanf</span>(argv[<span class="number">1</span>], <span class="string">&quot;%d&quot;</span>, &amp;id) &gt; <span class="number">0</span>) &#123; <span class="comment">// 读到pid</span></span><br><span class="line">      sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev);</span><br><span class="line">      job = getjobpid(jobs, id);</span><br><span class="line">      <span class="keyword">if</span> (job == <span class="literal">NULL</span>) &#123;</span><br><span class="line">         <span class="built_in">printf</span>(<span class="string">&quot;(%d): No such process\n&quot;</span>, id);</span><br><span class="line">         sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">         <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123; <span class="comment">// 格式错误</span></span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%s: argument must be a PID or %%jobid\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 因为子进程单独成组，所以kill很方便</span></span><br><span class="line">   <span class="comment">// 进程组是负数pid，发送信号并更改状态</span></span><br><span class="line">   <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">0</span>], <span class="string">&quot;bg&quot;</span>)) &#123;</span><br><span class="line">      kill(-(job-&gt;pid), SIGCONT);</span><br><span class="line">      job-&gt;state = BG;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;[%d] (%d) %s&quot;</span>, job-&gt;jid, job-&gt;pid, job-&gt;cmdline);</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123; <span class="comment">// 如果fg后台进程，那么将它的状态转为前台进程，然后等待它终止</span></span><br><span class="line">      kill(-(job-&gt;pid), SIGCONT);</span><br><span class="line">      job-&gt;state = FG;</span><br><span class="line">      waitfg(job-&gt;pid);</span><br><span class="line">   &#125;</span><br><span class="line">   sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="void-waitfg-pid-t-pid"><a href="#void-waitfg-pid-t-pid" class="headerlink" title="void waitfg(pid_t pid)"></a>void waitfg(pid_t pid)</h2><p>等待前台命令执行完成。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">waitfg</span><span class="params">(<span class="keyword">pid_t</span> pid)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 进程回收不需要做，只要等待前台进程就行</span></span><br><span class="line">   <span class="keyword">sigset_t</span> mask_temp;</span><br><span class="line">   sigemptyset(&amp;mask_temp);</span><br><span class="line">   <span class="comment">// 设定不阻塞任何信号，或者sleep显式等待信号</span></span><br><span class="line">   <span class="keyword">while</span> (fgpid(jobs) &gt; <span class="number">0</span>)</span><br><span class="line">      sigsuspend(&amp;mask_temp);</span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="void-sigchld-handler-int-sig"><a href="#void-sigchld-handler-int-sig" class="headerlink" title="void sigchld_handler(int sig)"></a>void sigchld_handler(int sig)</h2><p>处理<code>SIGCHLD</code>信号，即子进程停止或终止。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sigchld_handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">int</span> olderrno = errno;   <span class="comment">// 保存旧errno</span></span><br><span class="line">   <span class="keyword">int</span> status;</span><br><span class="line">   <span class="keyword">pid_t</span> pid;</span><br><span class="line">   <span class="keyword">sigset_t</span> mask_all, prev;</span><br><span class="line">   sigfillset(&amp;mask_all);  <span class="comment">// 设置全阻塞</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">while</span> ((pid = waitpid(<span class="number">-1</span>, &amp;status, WNOHANG | WUNTRACED)) &gt; <span class="number">0</span>) &#123; <span class="comment">// WNOHANG | WUNTRACED 是立即返回</span></span><br><span class="line">      sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev);</span><br><span class="line">      <span class="comment">// 用WIFEXITED(status)，WIFSIGNALED(status)，WIFSTOPPED(status)等来捕获终止或者被停止的子进程的退出状态</span></span><br><span class="line">      <span class="keyword">if</span> (WIFEXITED(status))  <span class="comment">// 正常退出 delete</span></span><br><span class="line">      &#123;</span><br><span class="line">         deletejob(jobs, pid);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (WIFSIGNALED(status)) &#123;<span class="comment">// 信号退出 delete</span></span><br><span class="line">         struct <span class="keyword">job_t</span> *job = getjobpid(jobs, pid);</span><br><span class="line">         <span class="built_in">printf</span>(<span class="string">&quot;Job [%d] (%d) terminated by signal %d\n&quot;</span>, job-&gt;jid, job-&gt;pid, WTERMSIG(status));</span><br><span class="line">         deletejob(jobs, pid);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;  <span class="comment">// 停止 只修改状态</span></span><br><span class="line">         struct <span class="keyword">job_t</span> *job = getjobpid(jobs, pid);</span><br><span class="line">         <span class="built_in">printf</span>(<span class="string">&quot;Job [%d] (%d) stopped by signal %d\n&quot;</span>, job-&gt;jid, job-&gt;pid, WSTOPSIG(status));</span><br><span class="line">         job-&gt;state = ST;</span><br><span class="line">      &#125;</span><br><span class="line">      sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   errno = olderrno;  <span class="comment">// 恢复</span></span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="void-sigint-handler-int-sig"><a href="#void-sigint-handler-int-sig" class="headerlink" title="void sigint_handler(int sig)"></a>void sigint_handler(int sig)</h2><p>处理<code>SIGINT</code>信号，即来自键盘的中断<code>ctrl-c</code>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sigint_handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 向子进程发送信号即可</span></span><br><span class="line">   <span class="keyword">int</span> olderrno = errno;</span><br><span class="line">   <span class="keyword">pid_t</span> pid;</span><br><span class="line">   <span class="keyword">sigset_t</span> mask_all, prev;</span><br><span class="line">   sigfillset(&amp;mask_all);  <span class="comment">// 设置全阻塞</span></span><br><span class="line"></span><br><span class="line">   sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev);</span><br><span class="line">   pid = fgpid(jobs);</span><br><span class="line">   sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">   <span class="keyword">if</span> (pid != <span class="number">0</span>)</span><br><span class="line">      kill(-pid, sig);</span><br><span class="line">   errno = olderrno;</span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="void-sigtstp-handler-int-sig"><a href="#void-sigtstp-handler-int-sig" class="headerlink" title="void sigtstp_handler(int sig)"></a>void sigtstp_handler(int sig)</h2><p>处理<code>SIGTSTP</code>信号，即终端停止信号<code>ctrl-z</code>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sigtstp_handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 向子进程发送信号即可</span></span><br><span class="line">   <span class="keyword">int</span> olderrno = errno;</span><br><span class="line">   <span class="keyword">pid_t</span> pid;</span><br><span class="line">   <span class="keyword">sigset_t</span> mask_all, prev;</span><br><span class="line">   sigfillset(&amp;mask_all);  <span class="comment">// 设置全阻塞</span></span><br><span class="line"></span><br><span class="line">   sigprocmask(SIG_BLOCK, &amp;mask_all, &amp;prev);</span><br><span class="line">   pid = fgpid(jobs);</span><br><span class="line">   sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br><span class="line">   <span class="keyword">if</span> (pid != <span class="number">0</span>)</span><br><span class="line">      kill(-pid, sig);</span><br><span class="line">   errno = olderrno;</span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="部分测试结果"><a href="#部分测试结果" class="headerlink" title="部分测试结果"></a>部分测试结果</h2><img src="https://img.lfalive.top/CSAPP-shlab/1.png" style="zoom: 50%;" />
+
+<img src="https://img.lfalive.top/CSAPP-shlab/2.png" style="zoom: 50%;" />
+
+<img src="https://img.lfalive.top/CSAPP-shlab/3.png" style="zoom: 50%;" />
+
+<img src="https://img.lfalive.top/CSAPP-shlab/4.png" style="zoom: 50%;" />
+
+<img src="https://img.lfalive.top/CSAPP-shlab/5.png" style="zoom: 50%;" />
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Lfalive</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lfalive.github.io/2021/12/05/CSAPP-shlab/">https://lfalive.github.io/2021/12/05/CSAPP-shlab/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lfalive.github.io" target="_blank">Lfalive's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CSAPP/">CSAPP</a></div><div class="post_share"><div class="social-share" data-image="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.lfalive.top/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="https://img.lfalive.top/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/09/13/CSAPP-datalab/"><img class="prev-cover" src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CSAPP实验——datalab</div></div></a></div><div class="next-post pull-right"><a href="/2021/12/05/CSAPP-target1/"><img class="next-cover" src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CSAPP实验——attack lab</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/12/05/CSAPP-bomb/" title="CSAPP实验——bomb lab"><img class="cover" src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-05</div><div class="title">CSAPP实验——bomb lab</div></div></a></div><div><a href="/2021/09/13/CSAPP-datalab/" title="CSAPP实验——datalab"><img class="cover" src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-13</div><div class="title">CSAPP实验——datalab</div></div></a></div><div><a href="/2021/12/05/CSAPP-target1/" title="CSAPP实验——attack lab"><img class="cover" src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-05</div><div class="title">CSAPP实验——attack lab</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://img.lfalive.top/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Lfalive</div><div class="author-info__description">Studying at HUST.</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lfalive" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:542679373@qq.com" target="_blank" title="Email"><i class="far fa-envelope"></i></a><a class="social-icon" href="/instagram.com/lfalive_cn" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198452723298" target="_blank" title="Steam"><i class="fab fa-steam"></i></a><a class="social-icon" href="https://www.hust.edu.cn/" target="_blank" title="HUST"><i class="fas fa-graduation-cap"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%98%E7%BD%91"><span class="toc-number">1.</span> <span class="toc-text">官网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">2.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void-eval-char-cmdline"><span class="toc-number">3.</span> <span class="toc-text">void eval(char *cmdline)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#int-builtin-cmd-char-argv"><span class="toc-number">4.</span> <span class="toc-text">int builtin_cmd(char **argv)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void-do-bgfg-char-argv"><span class="toc-number">5.</span> <span class="toc-text">void do_bgfg(char **argv)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void-waitfg-pid-t-pid"><span class="toc-number">6.</span> <span class="toc-text">void waitfg(pid_t pid)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void-sigchld-handler-int-sig"><span class="toc-number">7.</span> <span class="toc-text">void sigchld_handler(int sig)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void-sigint-handler-int-sig"><span class="toc-number">8.</span> <span class="toc-text">void sigint_handler(int sig)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void-sigtstp-handler-int-sig"><span class="toc-number">9.</span> <span class="toc-text">void sigtstp_handler(int sig)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E5%88%86%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="toc-number">10.</span> <span class="toc-text">部分测试结果</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/12/05/CSAPP-bomb/" title="CSAPP实验——bomb lab"><img src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSAPP实验——bomb lab"/></a><div class="content"><a class="title" href="/2021/12/05/CSAPP-bomb/" title="CSAPP实验——bomb lab">CSAPP实验——bomb lab</a><time datetime="2021-12-04T16:00:00.000Z" title="发表于 2021-12-05 00:00:00">2021-12-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/05/CSAPP-target1/" title="CSAPP实验——attack lab"><img src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSAPP实验——attack lab"/></a><div class="content"><a class="title" href="/2021/12/05/CSAPP-target1/" title="CSAPP实验——attack lab">CSAPP实验——attack lab</a><time datetime="2021-12-04T16:00:00.000Z" title="发表于 2021-12-05 00:00:00">2021-12-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/05/CSAPP-shlab/" title="CSAPP实验——shell lab"><img src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSAPP实验——shell lab"/></a><div class="content"><a class="title" href="/2021/12/05/CSAPP-shlab/" title="CSAPP实验——shell lab">CSAPP实验——shell lab</a><time datetime="2021-12-04T16:00:00.000Z" title="发表于 2021-12-05 00:00:00">2021-12-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/13/CSAPP-datalab/" title="CSAPP实验——datalab"><img src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSAPP实验——datalab"/></a><div class="content"><a class="title" href="/2021/09/13/CSAPP-datalab/" title="CSAPP实验——datalab">CSAPP实验——datalab</a><time datetime="2021-09-12T16:00:00.000Z" title="发表于 2021-09-13 00:00:00">2021-09-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/08/15/Learn-java-JUC/" title="Java学习笔记(5)——JUC"><img src="https://img.lfalive.top/Learn-java-base/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java学习笔记(5)——JUC"/></a><div class="content"><a class="title" href="/2021/08/15/Learn-java-JUC/" title="Java学习笔记(5)——JUC">Java学习笔记(5)——JUC</a><time datetime="2021-08-14T16:00:00.000Z" title="发表于 2021-08-15 00:00:00">2021-08-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 By Lfalive</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>渝ICP备19015268号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(()=>{
+  const $countDom = document.getElementById('twikoo-count')
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'twikoo-6gga64kp7c17697e',
+      region: ''
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'twikoo-6gga64kp7c17697e',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      $countDom.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const loadTwikoo = (bool = false) => {
+    if (typeof twikoo === 'object') {
+      init()
+      bool && $countDom && setTimeout(getCount,0)
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(()=> {
+        init()
+        bool && $countDom && setTimeout(getCount,0)
+      })
+    }
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo(true)
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="003zngCA4Gbjv4" data-server="tencent" data-type="song" data-fixed="true" data-mini="true" data-listFolded="false" data-loop="one" data-preload="none" data-autoplay="false" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener toc scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
