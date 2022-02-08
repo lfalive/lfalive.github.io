@@ -190,12 +190,12 @@
 <tr>
 <td align="center">删除元组</td>
 <td align="center"></td>
-<td align="center">拒绝/级联删除/设置为空值</td>
+<td align="center">拒绝&#x2F;级联删除&#x2F;设置为空值</td>
 </tr>
 <tr>
 <td align="center">修改主码值</td>
 <td align="center"></td>
-<td align="center">拒绝/级联修改/设置为空值</td>
+<td align="center">拒绝&#x2F;级联修改&#x2F;设置为空值</td>
 </tr>
 </tbody></table>
 <h2 id="习题5-6"><a href="#习题5-6" class="headerlink" title="习题5.6"></a>习题5.6</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> DEPT</span><br><span class="line">(DEPTNO <span class="type">SMALLINT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line"> DEPTNAME <span class="type">VARCHAR</span>(<span class="number">10</span>),</span><br><span class="line"> MANAGER <span class="type">VARCHAR</span>(<span class="number">10</span>),</span><br><span class="line"> PHONENUMBER <span class="type">CHAR</span>(<span class="number">12</span>));</span><br><span class="line"> </span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> EMP</span><br><span class="line">(EMPNO <span class="type">SMALLINT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line"> EMPNAME <span class="type">VARCHAR</span>(<span class="number">10</span>),</span><br><span class="line"> AGE <span class="type">SMALLINT</span>,</span><br><span class="line"> JOB <span class="type">VARCHAR</span>(<span class="number">9</span>),</span><br><span class="line"> SAL <span class="type">SMALLINT</span>,</span><br><span class="line"> DEPTNO <span class="type">SMALLINT</span>,</span><br><span class="line"> <span class="keyword">CONSTRAINT</span> C1 <span class="keyword">CHECK</span>(AGE<span class="operator">&lt;=</span><span class="number">60</span>),</span><br><span class="line"> <span class="keyword">CONSTRAINT</span> FK_DEPTNO <span class="keyword">FOREIGN</span> KEY(DEPTNO) <span class="keyword">REFERENCES</span> DEPT(DEPTNO));</span><br></pre></td></tr></table></figure>

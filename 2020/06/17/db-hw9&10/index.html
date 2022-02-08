@@ -150,7 +150,7 @@
       }
     }
     detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img.lfalive.top/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.lfalive.top/db-hw3%264/cover.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lfalive's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">《数据库系统概论》例程及习题（四）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-06-16T16:00:00.000Z" title="发表于 2020-06-17 00:00:00">2020-06-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-06T15:16:40.446Z" title="更新于 2021-11-06 23:16:40">2021-11-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/mysql/">mysql</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>26分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="《数据库系统概论》例程及习题（四）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>今天水完了DB的最后一节课，把之前的做的合在一起发一下。后面几次作业都没有实验，全是无脑copy参考书，没有什么记录的意义，所以迟迟懒得放上来。</p>
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img.lfalive.top/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.lfalive.top/db-hw3%264/cover.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lfalive's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">《数据库系统概论》例程及习题（四）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-06-16T16:00:00.000Z" title="发表于 2020-06-17 00:00:00">2020-06-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-06T15:16:40.446Z" title="更新于 2021-11-06 23:16:40">2021-11-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/mysql/">mysql</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>27分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="《数据库系统概论》例程及习题（四）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>今天水完了DB的最后一节课，把之前的做的合在一起发一下。后面几次作业都没有实验，全是无脑copy参考书，没有什么记录的意义，所以迟迟懒得放上来。</p>
 <h2 id="习题6-2"><a href="#习题6-2" class="headerlink" title="习题6.2"></a>习题6.2</h2><p><strong>关系模式</strong>：</p>
 <p>学生S(SNO,SN,SB,DN,CNO,SA)</p>
 <p>SNO学号，SN姓名，SB出生年月，SA宿舍区；</p>
@@ -314,10 +314,10 @@
 <p>数据库运行一段时间后，由于记录不断增、删、改，会使数据库的物理存储情况变坏，降低<br>了数据的存取效率，数据库性能下降，这时DBA就要对数据库进行重组织。DBMS一般都提<br>供数据重组织用的实用程序。</p>
 <p>数据库应用环境常常发生变化，如增加新的应用或新的实体，取消了某些应用，有的实体<br>与实体间的联系也发生了变化等，使原有的数据库设计不能满足新的需求，需要调整数据库<br>的模式和内模式。这就要进行数据库重构造。</p>
 <h2 id="习题9-2"><a href="#习题9-2" class="headerlink" title="习题9.2"></a>习题9.2</h2><ol>
-<li>需要对R进行全盘扫描，块数=20000/40=500。</li>
-<li>对R进行索引扫描，块数=3+1=4；其中3块B+树索引块，1块数据块。</li>
-<li>R本身20000/40=500个块，S本身1200/30=40个块，以S为外表，假设内存分配的块数为k，嵌套循环连接需要的块数为40+[40/k-1]*500。</li>
-<li>如果R和S都在B属性上排好序，块数500+40=540；如果都没有排序，则还要加上排序代价，结果为540+2 * 500 * ( (log2 500) + 1 ) + 2 * 40 * ( (log2 40) + 1 )。</li>
+<li>需要对R进行全盘扫描，块数&#x3D;20000&#x2F;40&#x3D;500。</li>
+<li>对R进行索引扫描，块数&#x3D;3+1&#x3D;4；其中3块B+树索引块，1块数据块。</li>
+<li>R本身20000&#x2F;40&#x3D;500个块，S本身1200&#x2F;30&#x3D;40个块，以S为外表，假设内存分配的块数为k，嵌套循环连接需要的块数为40+[40&#x2F;k-1]*500。</li>
+<li>如果R和S都在B属性上排好序，块数500+40&#x3D;540；如果都没有排序，则还要加上排序代价，结果为540+2 * 500 * ( (log2 500) + 1 ) + 2 * 40 * ( (log2 40) + 1 )。</li>
 </ol>
 <h2 id="习题9-3"><a href="#习题9-3" class="headerlink" title="习题9.3"></a>习题9.3</h2><p>最初的语法树和关系代数语法树为：</p>
 <p><img src="https://img.lfalive.top/db-hw9%2610/9-3-1.png" alt="9-3-1"></p>
@@ -354,12 +354,12 @@
 <li>重做T1；回滚T2。</li>
 </ol>
 <h2 id="习题10-5"><a href="#习题10-5" class="headerlink" title="习题10.5"></a>习题10.5</h2><ol>
-<li>A=8, B=7, C=11。</li>
-<li>A=10, B=0, C=11。</li>
-<li>A=10, B=0, C=11。</li>
-<li>A=10, B=0, C=11。</li>
-<li>A=10, B=0, C=11。</li>
-<li>A=0, B=0, C=0。</li>
+<li>A&#x3D;8, B&#x3D;7, C&#x3D;11。</li>
+<li>A&#x3D;10, B&#x3D;0, C&#x3D;11。</li>
+<li>A&#x3D;10, B&#x3D;0, C&#x3D;11。</li>
+<li>A&#x3D;10, B&#x3D;0, C&#x3D;11。</li>
+<li>A&#x3D;10, B&#x3D;0, C&#x3D;11。</li>
+<li>A&#x3D;0, B&#x3D;0, C&#x3D;0。</li>
 </ol>
 <h2 id="习题10-7"><a href="#习题10-7" class="headerlink" title="习题10.7"></a>习题10.7</h2><p>检查点记录是一类新的日志记录，内容包括建立检查点时刻所有正在执行的事务清单和这些事务的最近一个日志记录的地址。</p>
 <h2 id="习题10-9"><a href="#习题10-9" class="headerlink" title="习题10.9"></a>习题10.9</h2><ol>
@@ -425,7 +425,7 @@
 <td align="left"></td>
 </tr>
 <tr>
-<td align="left">Y=A=0</td>
+<td align="left">Y&#x3D;A&#x3D;0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -440,12 +440,12 @@
 <td align="left"></td>
 </tr>
 <tr>
-<td align="left">A=Y+2</td>
+<td align="left">A&#x3D;Y+2</td>
 <td align="left">Slock A</td>
 <td align="left"></td>
 </tr>
 <tr>
-<td align="left">写回A(=2)</td>
+<td align="left">写回A(&#x3D;2)</td>
 <td align="left">等待</td>
 <td align="left"></td>
 </tr>
@@ -461,7 +461,7 @@
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">Y=A=2</td>
+<td align="left">Y&#x3D;A&#x3D;2</td>
 <td align="left"></td>
 </tr>
 <tr>
@@ -481,12 +481,12 @@
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">A=Y*2</td>
+<td align="left">A&#x3D;Y*2</td>
 <td align="left">等待</td>
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">写回A(=4)</td>
+<td align="left">写回A(&#x3D;4)</td>
 <td align="left">等待</td>
 </tr>
 <tr>
@@ -497,7 +497,7 @@
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Y=A=4</td>
+<td align="left">Y&#x3D;A&#x3D;4</td>
 </tr>
 <tr>
 <td align="left"></td>
@@ -512,12 +512,12 @@
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">A=Y*Y</td>
+<td align="left">A&#x3D;Y*Y</td>
 </tr>
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">写回A(=16)</td>
+<td align="left">写回A(&#x3D;16)</td>
 </tr>
 <tr>
 <td align="left"></td>
@@ -525,7 +525,7 @@
 <td align="left">Unlock A</td>
 </tr>
 </tbody></table>
-<p>最后结果A=16，是可串行化的调度。</p>
+<p>最后结果A&#x3D;16，是可串行化的调度。</p>
 </li>
 <li><table>
 <thead>
@@ -541,7 +541,7 @@
 <td align="left"></td>
 </tr>
 <tr>
-<td align="left">Y=A=0</td>
+<td align="left">Y&#x3D;A&#x3D;0</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -557,7 +557,7 @@
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">Y=A=0</td>
+<td align="left">Y&#x3D;A&#x3D;0</td>
 <td align="left"></td>
 </tr>
 <tr>
@@ -571,12 +571,12 @@
 <td align="left"></td>
 </tr>
 <tr>
-<td align="left">A=Y+2</td>
+<td align="left">A&#x3D;Y+2</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr>
-<td align="left">写回A(=2)</td>
+<td align="left">写回A(&#x3D;2)</td>
 <td align="left"></td>
 <td align="left">Slock A</td>
 </tr>
@@ -588,7 +588,7 @@
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Y=A=2</td>
+<td align="left">Y&#x3D;A&#x3D;2</td>
 </tr>
 <tr>
 <td align="left"></td>
@@ -608,12 +608,12 @@
 <tr>
 <td align="left"></td>
 <td align="left">等待</td>
-<td align="left">Y=Y**2</td>
+<td align="left">Y&#x3D;Y**2</td>
 </tr>
 <tr>
 <td align="left"></td>
 <td align="left">等待</td>
-<td align="left">写回A(=4)</td>
+<td align="left">写回A(&#x3D;4)</td>
 </tr>
 <tr>
 <td align="left"></td>
@@ -622,12 +622,12 @@
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">A=Y*2</td>
+<td align="left">A&#x3D;Y*2</td>
 <td align="left"></td>
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">写回A(=0)</td>
+<td align="left">写回A(&#x3D;0)</td>
 <td align="left"></td>
 </tr>
 <tr>
@@ -638,7 +638,7 @@
 </tbody></table>
 </li>
 </ol>
-<p>最后结果A=0，为非串行化的调度。</p>
+<p>最后结果A&#x3D;0，为非串行化的调度。</p>
 <ol start="4">
 <li><table>
 <thead>
@@ -654,7 +654,7 @@
 <td align="left"></td>
 </tr>
 <tr>
-<td>Y=A=0</td>
+<td>Y&#x3D;A&#x3D;0</td>
 <td></td>
 <td align="left"></td>
 </tr>
@@ -664,12 +664,12 @@
 <td align="left"></td>
 </tr>
 <tr>
-<td>A=Y+2</td>
+<td>A&#x3D;Y+2</td>
 <td>Slock A</td>
 <td align="left"></td>
 </tr>
 <tr>
-<td>写回A(=2)</td>
+<td>写回A(&#x3D;2)</td>
 <td>等待</td>
 <td align="left"></td>
 </tr>
@@ -680,7 +680,7 @@
 </tr>
 <tr>
 <td></td>
-<td>Y=A=2</td>
+<td>Y&#x3D;A&#x3D;2</td>
 <td align="left"></td>
 </tr>
 <tr>
@@ -695,12 +695,12 @@
 </tr>
 <tr>
 <td></td>
-<td>A=Y*2</td>
+<td>A&#x3D;Y*2</td>
 <td align="left">等待</td>
 </tr>
 <tr>
 <td></td>
-<td>写回A(=4)</td>
+<td>写回A(&#x3D;4)</td>
 <td align="left">等待</td>
 </tr>
 <tr>
@@ -711,7 +711,7 @@
 <tr>
 <td></td>
 <td></td>
-<td align="left">Y=A=4</td>
+<td align="left">Y&#x3D;A&#x3D;4</td>
 </tr>
 <tr>
 <td></td>
@@ -726,12 +726,12 @@
 <tr>
 <td></td>
 <td></td>
-<td align="left">A=Y*Y</td>
+<td align="left">A&#x3D;Y*Y</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td align="left">写回A(=16)</td>
+<td align="left">写回A(&#x3D;16)</td>
 </tr>
 <tr>
 <td></td>
@@ -759,7 +759,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Y=A=0</td>
+<td>Y&#x3D;A&#x3D;0</td>
 <td></td>
 <td></td>
 </tr>
@@ -770,7 +770,7 @@
 </tr>
 <tr>
 <td></td>
-<td>Y=A=0</td>
+<td>Y&#x3D;A&#x3D;0</td>
 <td></td>
 </tr>
 <tr>
@@ -801,7 +801,7 @@
 <tr>
 <td></td>
 <td></td>
-<td>Y=A=0</td>
+<td>Y&#x3D;A&#x3D;0</td>
 </tr>
 <tr>
 <td></td>
@@ -841,8 +841,8 @@
 <td>R(A)</td>
 </tr>
 <tr>
-<td>B=A+B</td>
-<td>A=A+B</td>
+<td>B&#x3D;A+B</td>
+<td>A&#x3D;A+B</td>
 </tr>
 <tr>
 <td>W(B)</td>
@@ -894,7 +894,7 @@
 </ol>
 <h2 id="习题11-15"><a href="#习题11-15" class="headerlink" title="习题11.15"></a>习题11.15</h2><p>引进意向锁是为了提高封锁子系统的效率。在多粒度封锁方法中，一个数据对象可能以两种方式加锁——显式封锁和隐式封锁。因此系统在对某一数据对象加锁时，不仅要检查该数据对象上有无(显式和隐式)封锁与之冲突，还要检查其所有上级结点和所有下级结点，看申请的封锁是否与这些结点上的(显式和隐式)封锁冲突。显然，这样的检查方法效率很低。为此引进了意向锁。</p>
 <p>意向锁的含义是：对任一结点加锁时，必须先对它的上层结点加意向锁。引进意向锁后，系统对某一数据对象加锁时不必逐个检查与下部级结点的封锁冲突了。</p>
-<h2 id="习题11-16"><a href="#习题11-16" class="headerlink" title="习题11.16"></a>习题11.16</h2><p>IS锁：如果对一个数据对象加IS锁，表示它的后裔结点拟(意向)加S锁。例如，要对某个元组加S锁，则要首先对关系和数据库加IS锁。<br>IX锁：如果对一个数据对象加IX锁，表示它的后裔结点拟(意向)加X锁。例如，要对某个元组加X锁，则要首先对关系和数据库加IX锁。<br>SIX锁：如果对一个数据对象加SIX锁，表示对它加S锁，再加IX锁，即SIX=S+IX。<br>相容矩阵：</p>
+<h2 id="习题11-16"><a href="#习题11-16" class="headerlink" title="习题11.16"></a>习题11.16</h2><p>IS锁：如果对一个数据对象加IS锁，表示它的后裔结点拟(意向)加S锁。例如，要对某个元组加S锁，则要首先对关系和数据库加IS锁。<br>IX锁：如果对一个数据对象加IX锁，表示它的后裔结点拟(意向)加X锁。例如，要对某个元组加X锁，则要首先对关系和数据库加IX锁。<br>SIX锁：如果对一个数据对象加SIX锁，表示对它加S锁，再加IX锁，即SIX&#x3D;S+IX。<br>相容矩阵：</p>
 <table>
 <thead>
 <tr>

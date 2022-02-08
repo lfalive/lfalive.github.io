@@ -168,7 +168,7 @@
 
 <p><strong>wait和sleep的区别</strong></p>
 <ol>
-<li><p><strong>来自不同的类</strong>：wait=&gt;Object，sleep=&gt;Thread。</p>
+<li><p><strong>来自不同的类</strong>：wait&#x3D;&gt;Object，sleep&#x3D;&gt;Thread。</p>
 </li>
 <li><p><strong>关于锁的释放</strong>：wait会释放锁，sleep不会。</p>
 </li>
@@ -186,7 +186,7 @@
 <li>Synchronized无法判断获取锁的状态，Lock可以判断是否获取到了锁。</li>
 <li>Synchronized会自动释放锁，Lock必须手动释放锁，如果不释放，<strong>死锁</strong>。</li>
 <li>Synchronized中，线程A获取锁并阻塞，线程B就只能死等。Lock锁就不一定会等待下去。<code>tryLock()</code>。</li>
-<li>Synchronized可重入锁，不可中断的，非公平。Lock，可重入，可判断锁，可设置公平/非公平锁。</li>
+<li>Synchronized可重入锁，不可中断的，非公平。Lock，可重入，可判断锁，可设置公平&#x2F;非公平锁。</li>
 <li>Synchronized适合锁少量的代码同步问题，Lock适合锁大量的同步代码。</li>
 </ol>
 <h1 id="生产者和消费者问题"><a href="#生产者和消费者问题" class="headerlink" title="生产者和消费者问题"></a>生产者和消费者问题</h1><p>面试常见：单例模式、排序算法、生产者和消费者、死锁</p>
@@ -238,7 +238,7 @@
 <h1 id="Callable"><a href="#Callable" class="headerlink" title="Callable"></a>Callable</h1><ol>
 <li>可以有返回值</li>
 <li>可以抛出异常</li>
-<li>方法不同，run()/call()</li>
+<li>方法不同，run()&#x2F;call()</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CallableTest</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</span><br><span class="line">      FutureTask futureTask = <span class="keyword">new</span> FutureTask(<span class="keyword">new</span> MyThread());</span><br><span class="line">      <span class="keyword">new</span> Thread(futureTask).start();</span><br><span class="line">      String S = (String) futureTask.get();</span><br><span class="line">      System.out.println(S);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;call&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="string">&quot;fsdfsdfs&quot;</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -248,8 +248,8 @@
 <li>第二次再调用FutureTask对象所持有的线程会直接结束对应线程，直接调用结果。</li>
 <li>结果可能需要等待，会阻塞。</li>
 </ol>
-<h1 id="常用的辅助类（必会）"><a href="#常用的辅助类（必会）" class="headerlink" title="常用的辅助类（必会）"></a>常用的辅助类（必会）</h1><h2 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h2><p><code>countDownLatch.countDown();</code>//数量减一</p>
-<p><code>countDownLatch.await();</code>//等待计数器归零，然后再想下执行</p>
+<h1 id="常用的辅助类（必会）"><a href="#常用的辅助类（必会）" class="headerlink" title="常用的辅助类（必会）"></a>常用的辅助类（必会）</h1><h2 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h2><p><code>countDownLatch.countDown();</code>&#x2F;&#x2F;数量减一</p>
+<p><code>countDownLatch.await();</code>&#x2F;&#x2F;等待计数器归零，然后再想下执行</p>
 <p>每次有线程调用countDown()，计数器就会减一，假设计数器为0，countDownLatch.await()就会被唤醒。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountDownLatchDemo</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">      CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">6</span>);<span class="comment">//总数是6</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">6</span>; i++) &#123;</span><br><span class="line">         <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            countDownLatch.countDown();<span class="comment">//数量减一</span></span><br><span class="line">         &#125;, String.valueOf(i)).start();</span><br><span class="line">      &#125;</span><br><span class="line">      countDownLatch.await();<span class="comment">//等待计数器归零，然后再想下执行</span></span><br><span class="line">      System.out.println(<span class="string">&quot;结束&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 

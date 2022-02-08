@@ -221,13 +221,13 @@
 <p>第二章结束。</p>
 <h2 id="20190702"><a href="#20190702" class="headerlink" title="20190702"></a>20190702</h2><p>第三章，控制语句。</p>
 <h3 id="条件分支"><a href="#条件分支" class="headerlink" title="条件分支"></a>条件分支</h3><p>条件分支最简单，包括两路分支以及多路分支。两路分支的时候，因为if语句允许有返回值，能直接简化为类似于三目运算符的形式。</p>
-<p>多路分支中，when语句必须带上else，when/else也允许有返回值。牛逼的是，不用break，处理完一次就直接跳出。还可以引入变量或者具体的运算表达式进行判断，甚至可以是个范围：</p>
+<p>多路分支中，when语句必须带上else，when&#x2F;else也允许有返回值。牛逼的是，不用break，处理完一次就直接跳出。还可以引入变量或者具体的运算表达式进行判断，甚至可以是个范围：</p>
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">tv_answer.text = <span class="keyword">when</span> (count) &#123;</span><br><span class="line">    <span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span> -&gt; <span class="string">&quot;凉风有信的谜底是“讽”&quot;</span></span><br><span class="line">    <span class="keyword">in</span> <span class="number">13.</span><span class="number">.19</span> -&gt; <span class="string">&quot;秋月无边的谜底是“二”&quot;</span></span><br><span class="line">    !<span class="keyword">in</span> <span class="number">6.</span><span class="number">.10</span> -&gt; <span class="string">&quot;当里的当，少侠你来猜猜&quot;</span></span><br><span class="line">    <span class="keyword">else</span> -&gt; <span class="string">&quot;好诗，这真是一首好诗&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>更牛逼的是，还可以进行类型判断……</p>
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> countType:Number</span><br><span class="line"><span class="comment">//Long、Double、Float都由Number派生而来</span></span><br><span class="line">countType = <span class="keyword">when</span> (count) &#123;</span><br><span class="line">    <span class="number">0</span> -&gt; count.toLong()</span><br><span class="line">    <span class="number">1</span> -&gt; count.toDouble()</span><br><span class="line">    <span class="keyword">else</span> -&gt; count.toFloat()</span><br><span class="line">&#125;</span><br><span class="line">count = ( count + <span class="number">1</span> ) % <span class="number">3</span>;</span><br><span class="line">tv_answer.text = <span class="keyword">when</span> (countType) &#123;</span><br><span class="line"><span class="keyword">is</span> <span class="built_in">Long</span> -&gt; <span class="string">&quot;此恨绵绵无绝期&quot;</span></span><br><span class="line"><span class="keyword">is</span> <span class="built_in">Double</span> -&gt; <span class="string">&quot;树上的鸟儿成双对&quot;</span></span><br><span class="line"><span class="keyword">else</span> -&gt; <span class="string">&quot;门泊东吴万里船&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>遍历循环有for-in循环和利用indices下标数组的循环。下标数组用法同List。</p>
-<p>关于条件循环，kotlin在for-in循环中提供了until、step、downTo等关键字，但还是很乱很麻烦，所以更灵活的方案还是用do/while进行条件循环。</p>
+<p>关于条件循环，kotlin在for-in循环中提供了until、step、downTo等关键字，但还是很乱很麻烦，所以更灵活的方案还是用do&#x2F;while进行条件循环。</p>
 <p>循环中可以用continue和break。</p>
 <figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="comment">//发现该行是空串或者空格串，则忽略该行</span></span><br><span class="line">    <span class="keyword">if</span> (poem2Array[pos].isNullOrBlank())</span><br><span class="line">    <span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
 <p>我惊呆了，给循环加上@标记，想break几层循环就break几层……</p>
@@ -284,7 +284,7 @@
 <p><a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/connectivity/bluetooth.html?hl=zh-cn">经典蓝牙的官方开发文档（中文)</a> </p>
 <p><a target="_blank" rel="noopener" href="https://www.kotlincn.net/docs/reference/android-overview.html">Kotlin语言中文站</a> </p>
 <p>然后放到了github上，**<a target="_blank" rel="noopener" href="https://github.com/lfalive/Smart-wardrobe">链接</a>**。不过想了一下，比赛还在初期，就不开源了吧。比赛结束再开源，希望能取得一个好成绩。值得一提的是,在AndroidStudio的工程目录自动生成了gitignore文件，忽略了不必要的配置和build文件。</p>
-<p>目前实现了app控制手机蓝牙的开关、显示该手机已配对的蓝牙设备、以及对特定的蓝牙设备(即目前用来测试的HC-05蓝牙片子)进行连接/断开连接，同时完成了手机端到HC-05的数据传输。下一步是实现app的数据接收及处理。</p>
+<p>目前实现了app控制手机蓝牙的开关、显示该手机已配对的蓝牙设备、以及对特定的蓝牙设备(即目前用来测试的HC-05蓝牙片子)进行连接&#x2F;断开连接，同时完成了手机端到HC-05的数据传输。下一步是实现app的数据接收及处理。</p>
 <p><strong>20190714注：</strong>这个牛逼的测试程序有很多bug，我太年轻了，对蓝牙开发的理解还是不够。</p>
 <h2 id="20190714"><a href="#20190714" class="headerlink" title="20190714"></a>20190714</h2><p>前两天没有做笔记，因为发现开发蓝牙太麻烦了，还是用已有的框架吧，然后就折腾了两天……</p>
 <p>因为经典蓝牙的相关框架实在太少，遂转战BLE，这次准备用BLE了。其余内容在项目文档里写了，链接</p>

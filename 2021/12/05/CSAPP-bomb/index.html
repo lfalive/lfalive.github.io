@@ -189,7 +189,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) x/6a 0x402470</span><br><span class="line">0x402470:       0x400f7c &lt;phase_3+57&gt;   0x400fb9 &lt;phase_3+118&gt;</span><br><span class="line">0x402480:       0x400f83 &lt;phase_3+64&gt;   0x400f8a &lt;phase_3+71&gt;</span><br><span class="line">0x402490:       0x400f91 &lt;phase_3+78&gt;   0x400f98 &lt;phase_3+85&gt;</span><br></pre></td></tr></table></figure>
 
 <p>使用gdb检查 0x402470处的值为<strong>0x400f7c</strong></p>
-<p>说明第一个参数为0时，程序跳转到0x400f7c，%eax = 0xcf = <strong>207</strong></p>
+<p>说明第一个参数为0时，程序跳转到0x400f7c，%eax &#x3D; 0xcf &#x3D; <strong>207</strong></p>
 <p>因此，0 207为一组解。</p>
 <blockquote>
 <p>0 207(非唯一解，还有1 311, 2 707, 3 256, 4 389, 5 206, 6 682, 7 327)</p>

@@ -150,8 +150,8 @@
     }
     detectApple()
     })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img.lfalive.top/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.lfalive.top/CSAPP-datalab/cover.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lfalive's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP相关若干问题的补充整理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-09T16:00:00.000Z" title="发表于 2022-01-10 00:00:00">2022-01-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-14T12:22:57.490Z" title="更新于 2022-01-14 20:22:57">2022-01-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CSAPP/">CSAPP</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CSAPP相关若干问题的补充整理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="内存映射的概念，mmap-的使用"><a href="#内存映射的概念，mmap-的使用" class="headerlink" title="内存映射的概念，mmap()的使用"></a>内存映射的概念，<code>mmap()</code>的使用</h1><ul>
-<li>内存映射文件技术是操作系统提供的一种新的文件数据存取机制，利用内存映射文件技术，系统可以在内存空间中为文件保留一部分空间，并将文件映射到这块保留空间，一旦文件被映射后，操作系统将管理页映射缓冲以及高速缓冲等任务，而不需要调用分配、释放内存块和文件输入/输出的API函数，也不需要自己提供任何缓冲算法。</li>
-<li>使用内存映射文件处理存储于磁盘上的文件时，将不必再对文件执行I/O 操作，这意味着在对文件进行处理时将不必再为文件申请并分配缓存，所有的文件缓存操作均由系统直接管理，由于取消了将文件数据加载到内存、数据从内存到文件的回写以及释放内存块等步骤，使得内存映射文件在处理大数据量的文件时能起到相当重要的作用。Memory Mapping是进行文件I/O的高效方法。</li>
+<li>内存映射文件技术是操作系统提供的一种新的文件数据存取机制，利用内存映射文件技术，系统可以在内存空间中为文件保留一部分空间，并将文件映射到这块保留空间，一旦文件被映射后，操作系统将管理页映射缓冲以及高速缓冲等任务，而不需要调用分配、释放内存块和文件输入&#x2F;输出的API函数，也不需要自己提供任何缓冲算法。</li>
+<li>使用内存映射文件处理存储于磁盘上的文件时，将不必再对文件执行I&#x2F;O 操作，这意味着在对文件进行处理时将不必再为文件申请并分配缓存，所有的文件缓存操作均由系统直接管理，由于取消了将文件数据加载到内存、数据从内存到文件的回写以及释放内存块等步骤，使得内存映射文件在处理大数据量的文件时能起到相当重要的作用。Memory Mapping是进行文件I&#x2F;O的高效方法。</li>
 </ul>
 <p>在linux中，如果通过<code>malloc()</code>来申请一块大的内存，C库就会在<code>memory mapping segment</code>中创建一个匿名<code>memory mapping</code>而不是使用堆空间。这里的“大”意味着大于<code>MMAP_THRESHOLD</code>字节，该阈值可以通过<code>mallopt()</code>来进行调整。</p>
 <p><code>mmap()</code>将一个文件或者其它对象映射进内存。文件被映射到多个页上，如果文件的大小不是所有页的大小之和，最后一个页不被使用的空间将会清零。<code>mmap()</code>在用户空间映射调用系统中作用很大。</p>
@@ -162,7 +162,7 @@
 <p><code>int munmap(void* start,size_t length);</code></p>
 <p><strong>参数说明</strong></p>
 <p>start：映射区的开始地址，设置为0时表示由系统决定映射区的起始地址。</p>
-<p>length：映射区的长度。//长度单位是 以字节为单位，不足一内存页按一内存页处理</p>
+<p>length：映射区的长度。&#x2F;&#x2F;长度单位是 以字节为单位，不足一内存页按一内存页处理</p>
 <p>prot：期望的内存保护标志，不能与文件的打开模式冲突。是以下的某个值，可以通过or运算合理地组合在一起</p>
 <table>
 <thead>
@@ -196,11 +196,11 @@
 <ol>
 <li><p>运算效率高，不许进行比较和移位；</p>
 </li>
-<li><p>占用内存少，比如N=10000000；只需占用内存为N/8=1250000Byte=1.25M。 </p>
+<li><p>占用内存少，比如N&#x3D;10000000；只需占用内存为N&#x2F;8&#x3D;1250000Byte&#x3D;1.25M。</p>
 </li>
 </ol>
 <p><strong>缺点</strong>：所有的数据不能重复。即不可对重复的数据进行排序和查找。   </p>
-<p>BitMap可以使用在CSAPP的malloc lab中时，和链表相结合。举例说明，对于size&gt;=512 Bytes的空闲块，使用传统的链表方法进行组织；其余较小空闲块，使用BitMap标记。将size&lt;512 Bytes的空闲块，分为大小为32、 64、96……480、512的固定块，每种大小空闲块的数量也是预先设定好的，且使用各自的BitMap来标记某空闲块是否已分配。这是某种意义上的32Bytes对齐，是为了做到，可以根据一个块的地址，确定该块的大小和在对应BitMap的比特位。分配时，采用向上取整的策略 ，不拆分空白块。</p>
+<p>BitMap可以使用在CSAPP的malloc lab中时，和链表相结合。举例说明，对于size&gt;&#x3D;512 Bytes的空闲块，使用传统的链表方法进行组织；其余较小空闲块，使用BitMap标记。将size&lt;512 Bytes的空闲块，分为大小为32、 64、96……480、512的固定块，每种大小空闲块的数量也是预先设定好的，且使用各自的BitMap来标记某空闲块是否已分配。这是某种意义上的32Bytes对齐，是为了做到，可以根据一个块的地址，确定该块的大小和在对应BitMap的比特位。分配时，采用向上取整的策略 ，不拆分空白块。</p>
 <h1 id="程序内存映像结构"><a href="#程序内存映像结构" class="headerlink" title="程序内存映像结构"></a>程序内存映像结构</h1><p><img src="https://img.lfalive.top/CSAPP-plus/1.png"></p>
 <h2 id="代码段-Text-Segment"><a href="#代码段-Text-Segment" class="headerlink" title="代码段 Text Segment"></a>代码段 Text Segment</h2><p>这里存放的是CPU要执行的指令。代码段是可共享的，相同的代码在内存中只会有一个拷贝，同时这个段是只读的，防止程序由于错误而修改自身的指令。</p>
 <h2 id="初始化数据段-Data-Segment"><a href="#初始化数据段-Data-Segment" class="headerlink" title="初始化数据段 Data Segment"></a>初始化数据段 Data Segment</h2><p>这里存放的是程序中需要明确赋初始值的变量。例如初始化为非0的全局变量。</p>
@@ -403,7 +403,7 @@
 <h2 id="含义三：运行时系统（runtime-system）"><a href="#含义三：运行时系统（runtime-system）" class="headerlink" title="含义三：运行时系统（runtime system）"></a>含义三：运行时系统（runtime system）</h2><p>上面介绍的运行时库，主要针对的是C、C++和Rust这些「系统级语言」。只要将这个概念继续推广到其他高级语言，这时候的「运行时」指的就是runtime system了——<strong>如果讨论某门高级语言的运行时，我们通常是在讨论一个更重、更大而全的运行时库</strong>。比如Java的运行时是JRE，C#的运行时是CLR。这两者都相当于一个需要在OS上单独安装的软件，借助它们来解释执行相应语言的程序（编译出的字节码）。相比上面C语言的「运行时」，这已经是个复杂的基础软件系统了。</p>
 <h1 id="内核态和用户态区别"><a href="#内核态和用户态区别" class="headerlink" title="内核态和用户态区别"></a>内核态和用户态区别</h1><img src="https://img.lfalive.top/CSAPP-plus/5.png" style="zoom:50%;" />
 
-<p>用户态即上层应用程序的活动空间，应用程序的执行必须依托于内核提供的资源，包括CPU资源、存储资源、I/O资源等。为了使上层应用能够访问到这些资源，内核必须为上层应用提供访问的接口：即系统调用。</p>
+<p>用户态即上层应用程序的活动空间，应用程序的执行必须依托于内核提供的资源，包括CPU资源、存储资源、I&#x2F;O资源等。为了使上层应用能够访问到这些资源，内核必须为上层应用提供访问的接口：即系统调用。</p>
 <img src="https://img.lfalive.top/CSAPP-plus/6.jpg" style="zoom: 80%;" />
 
 <p>用户态的应用程序可以通过三种方式来访问内核态的资源：系统调用、库函数、Shell脚本。</p>
