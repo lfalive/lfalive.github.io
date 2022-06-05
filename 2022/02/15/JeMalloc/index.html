@@ -1,0 +1,507 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>内存分配器JeMalloc学习 | Lfalive's Blog</title><meta name="keywords" content="concurrency JeMalloc allocator"><meta name="author" content="Lfalive"><meta name="copyright" content="Lfalive"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="jemalloc is a general purpose malloc implementation that emphasizes fragmentation avoidance and scalable concurrency support.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存分配器JeMalloc学习">
+<meta property="og:url" content="https://lfalive.github.io/2022/02/15/JeMalloc/index.html">
+<meta property="og:site_name" content="Lfalive&#39;s Blog">
+<meta property="og:description" content="jemalloc is a general purpose malloc implementation that emphasizes fragmentation avoidance and scalable concurrency support.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.lfalive.top/JeMalloc/cover.jpg">
+<meta property="article:published_time" content="2022-02-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-21T14:35:03.638Z">
+<meta property="article:author" content="Lfalive">
+<meta property="article:tag" content="concurrency">
+<meta property="article:tag" content="JeMalloc">
+<meta property="article:tag" content="allocator">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.lfalive.top/JeMalloc/cover.jpg"><link rel="shortcut icon" href="https://img.lfalive.top/favicon.png"><link rel="canonical" href="https://lfalive.github.io/2022/02/15/JeMalloc/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.zhimg.com/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.zhimg.com/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?48f01bc27372d79626fe3a9bbfad5af4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":30,"languages":{"author":"作者: Lfalive","link":"链接: ","source":"来源: Lfalive's Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '内存分配器JeMalloc学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-02-21 22:35:03'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img.lfalive.top/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.lfalive.top/JeMalloc/cover.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lfalive's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">内存分配器JeMalloc学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-02-14T16:00:00.000Z" title="发表于 2022-02-15 00:00:00">2022-02-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-02-21T14:35:03.638Z" title="更新于 2022-02-21 22:35:03">2022-02-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/concurrency/">concurrency</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="内存分配器JeMalloc学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><a target="_blank" rel="noopener" href="http://jemalloc.net/">http://jemalloc.net/</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jemalloc/jemalloc">https://github.com/jemalloc/jemalloc</a></p>
+<p>JeMalloc是一款内存分配器，与其它内存分配器相比，它最大的优势在于多线程情况下的高性能以及内存碎片的减少。</p>
+<h1 id="论文（2006）"><a href="#论文（2006）" class="headerlink" title="论文（2006）"></a>论文（2006）</h1><p><a target="_blank" rel="noopener" href="http://people.freebsd.org/~jasone/jemalloc/bsdcan2006/jemalloc.pdf">http://people.freebsd.org/~jasone/jemalloc/bsdcan2006/jemalloc.pdf</a></p>
+<p>每个应用程序在运行时配置为具有固定数量的竞技场（Arena）。默认情况下，Arena的数量取决于处理器的数量：</p>
+<ul>
+<li>单处理器：所有分配使用一个Arena。使用多个Arena没有意义。</li>
+<li>多处理器：使用四倍于处理器数量的Arena。通过将线程分配给一组Arena，单个Arena被同时使用的概率会降低。</li>
+</ul>
+<p>线程第一次分配或释放内存时，它被分配到一个Arena。Arena是以循环方式选择的，这样可以保证分配给Arena的线程数量大致相同。线程仍然可以在特定的Arena上相互竞争，但平均而言，不可能比循环分配做得更好。动态重新平衡可能会减少竞争，但必要的记录成本很高。</p>
+<p>线程本地存储（TLS）对于有效实现Arena的循环分配非常重要，因为每个线程的Arena分配都需要存储在某个地方。</p>
+<p>通过sbrk或mmap从内核请求的所有内存都以“块（chunk）”的大小的倍数进行管理，这样chunk的基址总是chunk大小的倍数。chunk的这种对齐方式允许对与分配相关联的chunk进行恒定时间的计算。默认情况下，chunk大小为2MB，chunk大小始终相同，并且从chunk对齐的地址开始。Arena将chunk分割进行更小的分配，但巨大的分配直接由一个或多个连续chunk支持。</p>
+<p>分配的大小分为三大类：small、large和huge。所有分配请求均向上舍入到最近的大小类别边界。huge的分配的空间比chunk的一半还大，并由专用块直接支持。关于huge分配的元数据，存储在一棵红黑树中。由于大多数应用程序创建的huge分配很少（如果有的话），因此使用树不会出现可伸缩性问题。</p>
+<p>对于small和large的分配，使用Binary Buddy算法将chunk分割成pages运行。关于运行状态的信息存储在每个chunk的开头，作为页面映射。large分配的空间大于pages的一半，但不大于块的一半。</p>
+<p>小型分配分为三个子类别：tiny、quantum-spaced和sub-page。在实践中，大小为2的次幂的空间对于tiny的分配是有效的。量子大小通常为16字节。下图显示了所有分配大小的大小类。</p>
+<p><img src="https://img.lfalive.top/JeMalloc/table.png"></p>
+<p>如果取消quantum-spaced类，没有用于小型分配的子类，将更简单。然而，大多数应用程序主要分配小于512字节的对象，各类之间的量子间距大大减少了平均内部碎片。较多的大小类可能会导致外部碎片增加，但在实践中，减少的内部碎片通常会抵消增加的外部碎片。</p>
+<p>small的分配是分开的，在每次运行开始时存储区域位图（BitMap），与其他方法相比，该方法有几个优点：</p>
+<ul>
+<li><p>位图可以快速扫描第一个空闲区域，这允许对正在使用的区域进行紧密打包。</p>
+</li>
+<li><p>分配器数据和应用程序数据是分开的。这降低了应用程序损坏分配器数据的可能性。这还可能增加应用程序数据的局部性，因为分配器数据不会与应用程序数据混合。</p>
+</li>
+<li><p>微小的区域很容易得到支持。</p>
+</li>
+</ul>
+<p>为了限制外部碎片，除了最小类之外，所有类都使用多页运行。因此，对于最大的小型类（通常为2kb区域），外部碎片限制在大约3%。</p>
+<p>在任何给定的时间内，每个尺寸类最多有一次“当前运行”。“当前运行”将保持当前状态，直到完全填满或完全清空。运行状态按照四分位数进行分类，QINIT类别的run永远不会被破坏。为了销毁某个运行，必须首先将其提升到更高的fullness等级。</p>
+<img src="https://img.lfalive.top/JeMalloc/Q0.png" style="zoom:80%;" />
+
+<p>fullness类别还提供了一种从非完整运行中选择新“当前运行”的机制。偏好顺序是：Q50、Q25、Q0，然后是Q75。常规地这样选择会导致“当前运行”的快速切换。</p>
+<p>对内存分配器进行详尽的基准测试是不可行的，基准测试结果在任何意义上都不应被解释为肯定的。分配器性能对应用程序分配模式非常敏感，基准测试者可以心血来潮，构建微基准，以有利或不利的角度显示本文测试的三个分配器中的任何一个。作者尽了一切努力避免这种结果的扭曲，但他的客观性不应该被我们读者所假定。基准测试应该足以让读者相信至少以下几点：</p>
+<ul>
+<li><p>jemalloc适用于在多处理器系统上运行的多线程程序。</p>
+</li>
+<li><p>在单线程程序上的运行时间和内存使用方面，jemalloc表现出与phkmalloc和dlmalloc相似的性能。</p>
+</li>
+</ul>
+<p>事实上，jemalloc在所介绍的基准测试中表现得非常好，作者认为，没有任何理由怀疑jemalloc在除了精心制作的微基准测试之外的任何方面会比phkmalloc或dlmalloc表现得差得多。</p>
+<p>这些基准测试都不是为测量内存压力下的性能而设计的。本文没有包括，主要是因为phkmalloc在内存压力下表现良好，而jemalloc使用了足够相似的算法，因此应该表现出相似的性能。碎片化很难分析，因为它主要是一个定性问题，标准工具只提供定量指标。</p>
+<p>开发jemalloc时经常遇到的一个问题是，即使是看似无害的附加功能，例如维护每个Arena的总分配内存计数器，也会导致性能下降。分配器设计之初的特性比最终的多得多。</p>
+<p>分配器的设计和实现的一部分吸引力在于，对于所有可能的分配模式，没有哪个分配器是优越的，所以在新软件引入新的分配模式时，总是需要进行微调。</p>
+<h1 id="手册（jemalloc-5-2-1）"><a href="#手册（jemalloc-5-2-1）" class="headerlink" title="手册（jemalloc 5.2.1）"></a>手册（jemalloc 5.2.1）</h1><h2 id="Standard-API"><a href="#Standard-API" class="headerlink" title="Standard API"></a>Standard API</h2><p><code>void *malloc(size_t size)</code>;</p>
+<p>分配大小为<code>size</code>字节的未初始化内存。分配的空间被适当地对齐，以便于存储任何类型的对象。</p>
+<p><code>void *calloc(size_t number, size_t size)</code>;</p>
+<p>为<code>number</code>个对象分配空间，每个对象的长度为<code>size</code>字节。结果与使用<code>number*size</code>参数调用<code>malloc()</code>相同，只是分配的内存被显式初始化为0字节。</p>
+<p><code>int posix_memalign(void **ptr, size_t alignment, size_t size)</code>;</p>
+<p>分配<code>size</code>字节的内存，使分配的基址是<code>alignment</code>的倍数，并以<code>ptr</code>指向的值返回分配。请求的<code>alignment</code>必须是2的幂，至少与<code>sizeof(void *)</code>大小相同。</p>
+<p><code>void *aligned_alloc(size_t alignment, size_t size)</code>;</p>
+<p>分配<code>size</code>字节的内存，使分配的基址是<code>alignment</code>的倍数。请求的<code>alignment</code>必须是2的幂。如果<code>size</code>不是<code>alignment</code>的整数倍，则行为未定义。</p>
+<p><code>void *realloc(void *ptr, size_t size)</code>;</p>
+<p>函数将<code>ptr</code>引用的先前分配内存的大小更改为<code>size</code>字节。内存的内容在新旧大小中以较小者为准。如果新大小更大，则新分配的内存部分的内容未定义。成功后，<code>ptr</code>引用的内存将被释放，并返回指向新分配内存的指针。请注意，<code>realloc()</code>可能会移动内存分配，从而产生与<code>ptr</code>不同的返回值。如果<code>ptr</code>为NULL，<code>realloc()</code>函数在指定大小下的行为与<code>malloc()</code>相同。</p>
+<p><code>void free(void *ptr)</code>;</p>
+<p>使<code>ptr</code>引用的已分配内存可用于将来的分配。如果<code>ptr</code>为NULL，则不会发生任何操作。</p>
+<h2 id="Non-standard-API"><a href="#Non-standard-API" class="headerlink" title="Non-standard API"></a>Non-standard API</h2><p><code>void *mallocx(size_t size, int flags)</code>;</p>
+<p>分配至少<code>size</code>字节的内存，并返回一个指向分配基址的指针。如果大小为0，则行为未定义。</p>
+<p><code>void *rallocx(void *ptr, size_t size, int flags)</code>;</p>
+<p>将<code>ptr</code>处的分配调整为至少<code>size</code>字节，并返回一个指向最终分配的基址的指针，该地址可能已从其原始位置移动，也可能未从其原始位置移动。如果大小为0，则行为未定义。</p>
+<p><code>size_t xallocx(void *ptr, size_t size, size_t extra, int flags)</code>;</p>
+<p>将<code>ptr</code>处的分配调整为至少<code>size</code>字节，并返回分配的实际大小。如果<code>extra</code>为非零，则会尝试调整为至少<code>size + extra</code>字节，且无法分配额外字节并不会导致分配失败。如果<code>size</code>为0，或者<code>size + extra &gt; SIZE_T_MAX</code>，则行为未定义。</p>
+<p><code>size_t sallocx(void *ptr, int flags)</code>;</p>
+<p>返回<code>ptr</code>处分配的实际大小。</p>
+<p><code>void dallocx(void *ptr, int flags)</code>;</p>
+<p>使<code>ptr</code>引用的内存可用于将来的分配。</p>
+<p><code>void sdallocx(void *ptr, size_t size, int flags)</code>;</p>
+<p><code>sdallocx()</code>函数是<code>dallocx()</code>的一个扩展，带有一个size参数，允许调用方传递分配大小。最小有效输入大小是分配的原始请求大小，最大有效输入大小是<code>nallocx()</code>或<code>sallocx()</code>返回的相应值。</p>
+<p><code>size_t nallocx(size_t size, int flags)</code>;</p>
+<p><code>nallocx()</code>函数不分配内存，但它执行与<code>mallocx()</code>函数相同的大小计算，并返回等效<code>mallocx()</code>函数调用产生的分配的实际大小，如果输入超过支持的最大大小类或对齐，则返回0。如果大小为0，则行为未定义。</p>
+<p>以上<code>mallocx()</code> ,<code> rallocx()</code> ,<code>xallocx()</code> ,<code> sallocx</code>() ,<code>dallocx()</code> ,<code> sdallocx()</code>，和<code>nallocx()</code>都有<code>flags</code>可用于指定选项的参数。使用位或(<code> |</code>)指定一个或多个参数：</p>
+<ul>
+<li><p><code>MALLOCX_LG_ALIGN(la)</code></p>
+<p>对齐内存分配，使其从一个地址开始，该地址是<code>(1 &lt;&lt; la)</code>的倍数。此宏不验证<code>la</code>在有效范围内。</p>
+</li>
+<li><p><code>MALLOCX_ALIGN(a)</code></p>
+<p>对齐内存分配，使其从一个地址开始，该地址是<code>a</code>的倍数，其中<code>a</code>是2的幂。此宏不验证<code>a</code>是2的幂。</p>
+</li>
+<li><p><code>MALLOCX_ZERO</code></p>
+<p>初始化新分配的内存以包含0字节。在不断增长的重新分配情况下，重新分配之前的实际大小定义了未接触字节和初始化为包含0字节的字节之间的边界。如果此宏不存在，则新分配的内存将取消初始化。</p>
+</li>
+<li><p><code>MALLOCX_TCACHE(tc)</code></p>
+<p>使用标识符<code>tc</code>指定特定线程缓存(tcache)。此宏不验证<code>tc</code>指定的标识符有效。</p>
+</li>
+<li><p><code>MALLOCX_TCACHE_NONE</code></p>
+<p>不要使用特定线程缓存(tcache)。除非使用了<code>MALLOCX_TCACHE(tc)</code>，不然在许多情况下将使用自动管理的tcache。此宏不能作为参数与<code>MALLOCX_TCACHE(tc)</code>用于同一个<code>flags</code>。</p>
+</li>
+<li><p><code>MALLOCX_ARENA(a)</code></p>
+<p>使用索引<code>a</code>指定的Arena。此宏对指定Arena以外的Arena分配区域无效。此宏不验证索引<code>a</code>指定的Arena在有效范围内。</p>
+</li>
+</ul>
+<p><code>int mallctl(const char *name, void *oldp, size_t *oldlenp, void *newp, size_t newlen)</code>;</p>
+<p><code>mallctl()</code>函数提供了一个通用接口，设置可修改的参数和触发操作。<code>name</code>参数指定树结构命名空间中的位置。要读取一个值，通过<code>oldp</code>传递一个指针，该指针所指向空间有足够的空间来容纳该值，并通过<code>oldlenp</code>传递一个指向其长度的指针；否则传递<code>NULL</code>和<code>NULL</code>。同样，要写一个值，通过<code>newp</code>传递一个指向该值的指针，并通过<code>newlen</code>传递其长度；否则传递<code>NULL</code>和<code>0</code>。</p>
+<p><code>int mallctlnametomib(const char *name, size_t *mibp, size_t *miblenp)</code>;</p>
+<p><code>int mallctlbymib(const size_t *mib, size_t miblen, void *oldp, size_t *oldlenp, void *newp, size_t newlen)</code>;</p>
+<p><code>mallctlnametomib()</code>提供了一种方法，将<code>name</code>转换为“管理信息库”（MIB），可以重复传递给<code>mallctlbymib()</code>，避免重复查询命名空间相同部分。从<code>mallctlnametomib()</code>成功返回后，<code>mibps</code>是一个包含<code>*miblenp</code>个整数的数组，其中<code>*miblenp</code>是<code>name</code>中的组件数和<code>*miblenp</code>的输入值中的较小者。因此，可以传递小于组件数量的<code>*miblenp</code>，这会产生一个部分MIB，可以用作构建完整MIB的基础。因此，构建如下代码是合理的：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">unsigned</span> nbins, i;</span><br><span class="line"><span class="type">size_t</span> mib[<span class="number">4</span>];</span><br><span class="line"><span class="type">size_t</span> len, miblen;</span><br><span class="line">len = <span class="keyword">sizeof</span>(nbins);</span><br><span class="line">mallctl(<span class="string">&quot;arenas.nbins&quot;</span>, &amp;nbins, &amp;len, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">miblen = <span class="number">4</span>;</span><br><span class="line">mallctlnametomib(<span class="string">&quot;arenas.bin.0.size&quot;</span>, mib, &amp;miblen);</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; nbins; i++) &#123;</span><br><span class="line">	<span class="type">size_t</span> bin_size;</span><br><span class="line">	mib[<span class="number">2</span>] = i;</span><br><span class="line">	len = <span class="keyword">sizeof</span>(bin_size);</span><br><span class="line">	mallctlbymib(mib, miblen, (<span class="type">void</span> *)&amp;bin_size, &amp;len, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">	<span class="comment">/* Do something with bin_size... */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>void malloc_stats_print(void(*write_cb)(void *, const char *), void *cbopaque, const char *opts)</code>;</p>
+<p>写入摘要统计信息。统计数据以人类可读的形式呈现，除非<code>opts</code>字符串中指定了“J”字符，在这种情况下，统计数据以JSON格式呈现。此函数可以重复调用。通过在<code>opts</code>字符串中指定“g”作为字符，可以忽略在执行过程中从不更改的一般信息。请注意，<code>malloc_stats_print()</code>在内部使用<code>mallctl*()</code>函数，因此如果多个线程同时使用这些函数，则可能会报告不一致的统计信息。如果配置过程中指定了<code>--enable stats</code>参数，则可以指定定“m”、“d”和“a”来分别忽略合并的Arena、销毁合并的Arena和打印每个Arena的统计信息；可以指定“b”和“l”来分别忽略bins和large对象的每大小类别统计信息；可以指定“x”来省略所有互斥统计信息；“e”可用于省略范围统计信息。无法识别的字符将被默默忽略。请注意，线程缓存可能会阻止某些统计信息完全更新，因为合并跟踪线程缓存操作的计数器时需要额外的锁。</p>
+<h1 id="源码（5-2-1）"><a href="#源码（5-2-1）" class="headerlink" title="源码（5.2.1）"></a>源码（5.2.1）</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.dbplayer.org/jemalloc-note/">https://blog.dbplayer.org/jemalloc-note/</a></p>
+<p><a target="_blank" rel="noopener" href="https://uncp.github.io/JeMalloc/">https://uncp.github.io/JeMalloc/</a></p>
+<h2 id="重要特性"><a href="#重要特性" class="headerlink" title="重要特性"></a>重要特性</h2><ol>
+<li>chunk这一概念被替换成了extent</li>
+<li>dirty page的decay变成了两阶段，dirty -&gt; muzzy -&gt; retained（基于衰变的清理）</li>
+<li>huge class这一概念不再存在</li>
+<li>红黑树不再使用，取而代之的是pairing heap</li>
+</ol>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="extent"><a href="#extent" class="headerlink" title="extent"></a>extent</h3><p>头文件<code>include/jemalloc/internal/extent*.h</code>，jemalloc核心数据结构，内存操作单位。</p>
+<p>管理jemalloc内存块的结构（即分配给用户的虚拟内存块），每一个内存块大小可以是<code>N * page_size (N &gt;= 1)</code>。一个extent可以用来分配一次large_class的内存申请，但可以用来分配多次small_class的内存申请，如果分配的是small_class，这时的extent也称作slab。</p>
+<ul>
+<li><code>extent.e_bits</code>：8字节长，记录<code>arena_ind</code>、<code>zeroed</code>、<code>state</code>、<code>nfree</code>等信息</li>
+<li><code>extent.e_addr</code>：管理的内存块的起始地址</li>
+<li><code>extent.e_slab_data</code>：当此<code>extent</code>用于分配small_class内存时，用来记录这个extent的分配情况，此时每个extent的内的小内存称为region</li>
+</ul>
+<p><code>extent.e_bits</code>中记录的state有四种情况。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">	extent_state_active   = <span class="number">0</span>,</span><br><span class="line">	extent_state_dirty    = <span class="number">1</span>,</span><br><span class="line">	extent_state_muzzy    = <span class="number">2</span>,</span><br><span class="line">	extent_state_retained = <span class="number">3</span></span><br><span class="line">&#125; <span class="type">extent_state_t</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="arena"><a href="#arena" class="headerlink" title="arena"></a>arena</h3><p>头文件<code>include/jemalloc/internal/arena_*.h</code>，arena是extent的管理者。</p>
+<p>用于分配&amp;回收extent的结构，在文件<code>arena_structs_b.h</code>中定义它的数据结构。默认使用四倍于逻辑CPU数量的arena来减少锁的竞争，各个arena所管理的内存相互独立，多个arena之间的内存是不可见的。每个用户线程会被绑定到一个arena上，它的所有内存申请释放行为都会被jemalloc转换为对此 arena 的操作。</p>
+<ul>
+<li><code>arena.large</code>：存放large_class的extent</li>
+<li><code>arena.bins[SC_NBINS]</code>：heap，存放空闲region</li>
+<li><code>arena.extents_dirty</code>：存放用户调用<code>free</code>或<code>tcache</code>回收后的extent</li>
+<li><code>arena.extents_muzzy</code>：存放<code>extents_dirty</code>进行lazy purge后的extent，dirty -&gt; muzzy</li>
+<li><code>arena.extents_retained</code>：存放<code>extents_muzzy</code>进行<code>decommit</code>或force purge后的extent，muzzy -&gt; retained</li>
+<li><code>arena.extent_avail</code>：存放可用的extent</li>
+<li><code>arena.base</code>：指向该arena的元数据base</li>
+</ul>
+<p>arena中释放的extend标记了多种状态，清理过程被称为decay-based purging（基于衰变的清理）。</p>
+<p>释放的extent如果曾被使用过，会有对应的物理内存分配，就认为是dirty的，如果一个固定周期内没被再使用，就移动到muzzy列表。如果一个固定周期内没被再使用会被purge，会转到retained列表中。retained里的就是完全用不到的extent了，直接释放掉留个统计数就好了。</p>
+<p>当线程寻找一个合适的arena进行绑定时，会遍历arenas数组，并顺序挑选。</p>
+<ol>
+<li>如果找到当前线程绑定数为0的arena, 则优先使用它。</li>
+<li>如果当前已初始化arena中没有线程绑定数为0的，则优先使用剩余空的数组位置<br>构造一个新的arena。arenas数组遵循lazy create原则，初始状态整个arenas数组只有0号是被初始化的，其他位置都是null指针。通常随着新的线程不断创造出来，arenas数组也被逐渐填满。</li>
+<li>如果前两条都不满足，则选择当前绑定线程数最小的，且位置更靠前的一个arena进行绑定。</li>
+</ol>
+<h3 id="size-class"><a href="#size-class" class="headerlink" title="size class"></a>size class</h3><p>头文件<code>include/jemalloc/internal/sc.h</code>。</p>
+<p>假设在64位系统上，页面大小为4 KiB，量子大小为16 bytes，每个类别中的大小类如表所示。</p>
+<p><img src="https://img.lfalive.top/JeMalloc/table5.2.1.png"></p>
+<p>共有232个小类。如果用户申请的大小位于两个小类之间，会取较大的。比如申请14字节，位于8和16字节之间，按16字节分配，分为2大类：</p>
+<ol>
+<li><code>small_class</code>（小内存）：对于64位机器来说，通常区间是<code>[8, 14KiB]</code>。为了减少内存碎片，并不都是2的幂。</li>
+<li><code>large_class</code>（大内存）：对于64位机器来说，通常区间是<code>[16KiB, 7EiB]</code>，从<code>4 * page_size</code>开始，最大是<code>2^62 + 3^60</code>。</li>
+</ol>
+<ul>
+<li><code>sc.index</code>：size位于<code>size_class</code>中的索引号，区间为 [0，231]。例如4kb字节为28。</li>
+</ul>
+<h3 id="base"><a href="#base" class="headerlink" title="base"></a>base</h3><p>头文件<code>include/jemalloc/internal/base_*.h</code>。</p>
+<p>arena的元数据，所有base组成一个链表。</p>
+<h3 id="bin"><a href="#bin" class="headerlink" title="bin"></a>bin</h3><p>头文件<code>include/jemalloc/internal/bin*.h</code>，管理slab。</p>
+<p>bin是一组slab类型的extent。</p>
+<h3 id="slab"><a href="#slab" class="headerlink" title="slab"></a>slab</h3><p>当extent用于分配small_class内存时，称其为slab。一个extent可以被用来处理多个同一size_class的内存申请。</p>
+<h2 id="其他头文件"><a href="#其他头文件" class="headerlink" title="其他头文件"></a>其他头文件</h2><h3 id="jemalloc"><a href="#jemalloc" class="headerlink" title="jemalloc"></a>jemalloc</h3><p>头文件<code>include/jemalloc/internal/jemalloc*.h</code>，jemalloc 核心接口。</p>
+<h3 id="atomic"><a href="#atomic" class="headerlink" title="atomic"></a>atomic</h3><p>头文件<code>include/jemalloc/internal/atomic*.h</code>，移植了C11中的<code>atomic</code>操作。</p>
+<p>包括<code>acquire</code>等基本操作和<code>bool</code>、<code>size_t</code>、<code>unsigned</code>等一些基本类型的原子类型。</p>
+<h3 id="background-thread"><a href="#background-thread" class="headerlink" title="background_thread"></a>background_thread</h3><p>头文件<code>include/jemalloc/internal/background_thread_*.h</code>，后台线程。</p>
+<p>后台线程用于内存的自动回收，可以主动的启停。</p>
+<h3 id="tsd"><a href="#tsd" class="headerlink" title="tsd"></a>tsd</h3><p>头文件<code>include/jemalloc/internal/tsd*.h</code>，Thread-Specific-Data，每个线程独有，用于存放与这个线程相关的结构。</p>
+<ul>
+<li><code>tsd.rtree_ctx</code>：当前线程的rtree context，用于快速访问extent信息</li>
+<li><code>tsd.arena</code>：当前线程绑定的<code>arena</code></li>
+<li><code>tsd.tcache</code>：当前线程的<code>tcache</code></li>
+</ul>
+<h3 id="tcache"><a href="#tcache" class="headerlink" title="tcache"></a>tcache</h3><p>头文件<code>include/jemalloc/internal/tcache*.h</code>，tcache是每个线程独有的缓存（Thread Cache），大多数内存申请都可以在tcache中直接得到，避免加锁。</p>
+<ul>
+<li><code>tcache.bins_small[SC_NBINS]</code>：小内存的cache_bin</li>
+</ul>
+<h3 id="cache-bin"><a href="#cache-bin" class="headerlink" title="cache_bin"></a>cache_bin</h3><p>头文件<code>include/jemalloc/internal/cache_bin.h</code>，每个线程独有的，专用于分配小内存的缓存。</p>
+<ul>
+<li><code> cache_bin.low_water</code>：上一次GC后剩余的缓存数量</li>
+<li><code>cache_bin.ncached</code>：当前cache_bin存放的缓存数量</li>
+<li><code>cache_bin.avail</code>：可直接用于分配的内存</li>
+</ul>
+<h3 id="pages"><a href="#pages" class="headerlink" title="pages"></a>pages</h3><p>头文件<code>include/jemalloc/internal/pages.h</code>，内存页的操作。</p>
+<h2 id="工具函数"><a href="#工具函数" class="headerlink" title="工具函数"></a>工具函数</h2><p>均在 <code>include/jemalloc/internal/</code> 目录下</p>
+<ul>
+<li><code>assert.h</code>，自定义断言，减少断言失败后死锁的可能性</li>
+<li><code>bit_util.h</code>，位操作</li>
+<li><code>ctl.h</code>，控制函数入口</li>
+<li><code>emitter.h</code>，用于输出</li>
+<li><code>log.h</code>，日志输出</li>
+<li><code>hook.h</code>，定义 extent 的 hook 方法（非常实验性的API，可能会被删除）</li>
+<li><code>mutex*.h</code>，锁实现</li>
+<li><code>nstime.h</code>，时间相关函数</li>
+<li><code>prof*.h</code>，性能分析相关实现</li>
+<li><code>quantum.h</code>，定义用于对齐的宏 <code>LG_QUANTUM</code></li>
+<li><code>safety_check.h</code>，安全性检查相关</li>
+<li><code>stats.h</code>，状态统计和打印相关</li>
+<li><code>sz.h</code>，内存大小计算和转换相关</li>
+<li><code>test_hooks.h</code>，用于测试对libc的hook效果</li>
+<li><code>ticker.h</code>，时间ticker类</li>
+<li><code>util.h</code>，各种工具函数</li>
+<li><code>witness.h</code>，死锁监控</li>
+</ul>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><p>均在 <code>include/jemalloc/internal/</code> 目录下</p>
+<ul>
+<li><code>bitmap.h</code></li>
+<li><code>ckh.h</code>，Cuckoo Hash</li>
+<li><code>hash.h</code>，基于<a target="_blank" rel="noopener" href="https://github.com/aappleby/smhasher">MurmurHash3</a></li>
+<li><code>div.h</code>，比CPU除法更快的实现</li>
+<li><code>ph.h</code>，<a target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~sleator/papers/pairing-heaps.pdf">Pairing Heap</a>实现。配对堆是一种多叉树，并且可以被认为是一种简化的斐波那契堆。（From wikipedia）</li>
+<li><code>prng.h</code>，线性同余伪随机数生成器</li>
+<li><code>rb.h</code>，实现left-leaning 2-3 red-black tree</li>
+<li><code>rtree*.h</code>，实现Radix Tree，专门为将元数据与jemalloc当前拥有的extent关联起来而定制的。</li>
+<li><code>seq.h</code>，顺序锁（seqlock）实现</li>
+<li><code>smoothsteps.h</code>，实现S函数曲线（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Smoothstep">sigmoidal curve</a>）的回收图像，将一个回收周期拆分为200步</li>
+<li><code>spin.h</code>，自旋等待</li>
+</ul>
+<h2 id="其他设计"><a href="#其他设计" class="headerlink" title="其他设计"></a>其他设计</h2><p>见<a target="_blank" rel="noopener" href="https://uncp.github.io/JeMalloc">参考链接</a>，基于5.1.0版本，结合5.2.0版本的<a target="_blank" rel="noopener" href="https://github.com/jemalloc/jemalloc/releases/tag/5.2.0">ChangeLog</a>看。</p>
+<h1 id="博客（2011）和视频（2015）"><a href="#博客（2011）和视频（2015）" class="headerlink" title="博客（2011）和视频（2015）"></a>博客（2011）和视频（2015）</h1><p><a target="_blank" rel="noopener" href="https://engineering.fb.com/2011/01/03/core-data/scalable-memory-allocation-using-jemalloc/">博客链接</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=RcWp5vwGlYU">视频链接</a></p>
+<h1 id="安装测试"><a href="#安装测试" class="headerlink" title="安装测试"></a>安装测试</h1><p>下载最新source code压缩包解压。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> jemalloc-5.2.1</span><br><span class="line">./autogen.sh</span><br><span class="line">make -j 6</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>安装成功后编写测试代码testjemalloc.c：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;jemalloc/jemalloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_THREAD 16</span></span><br><span class="line"><span class="type">pthread_t</span> threads[MAX_THREAD];</span><br><span class="line"><span class="type">char</span> *opt;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_something</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="built_in">malloc</span>(<span class="number">50000</span>);</span><br><span class="line">	<span class="built_in">malloc</span>(<span class="number">20000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; MAX_THREAD; i++) &#123;</span><br><span class="line">		pthread_create(&amp;threads[i], <span class="literal">NULL</span>, (<span class="type">void</span> *) &amp;do_something, <span class="literal">NULL</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	opt = <span class="string">&quot;gbxem&quot;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; MAX_THREAD; i++) &#123; pthread_join(threads[i], <span class="literal">NULL</span>); &#125;</span><br><span class="line">	malloc_stats_print(<span class="literal">NULL</span>, <span class="literal">NULL</span>, opt);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>gcc testjemalloc.c -o testjemalloc -ljemalloc -lpthread</code>编译，然后将jemalloc安装目录下的lib路径追加到文件&#x2F;etc&#x2F;ld.so.conf，再执行<code>ldconfig</code>，就可以正常运行测试程序了。</p>
+<p>以上代码创建16个线程，每个线程分配大小分别为50000和20000的内存块（都是large），并输出分配统计。</p>
+<p><img src="https://img.lfalive.top/JeMalloc/testjemalloc.png"></p>
+<p><img src="https://img.lfalive.top/JeMalloc/testjemalloc1.png"></p>
+<p><img src="https://img.lfalive.top/JeMalloc/testjemalloc2.png"></p>
+<p><img src="https://img.lfalive.top/JeMalloc/testjemalloc3.png"></p>
+<p>可以看出，arena[0]仍然有一个线程绑定，创建出来的剩下三个arena则已没有线程绑定，因为工作线程已经销毁。对于大小为20000的申请，会分配大小为20480的块，index为37；对于大小为50000的申请，会分配大小为57344的块，index为43。可以看出，arena[1]各使用了13个大小为20480和57344的块，说明工作过程中有13个线程曾经被绑定到该arena。以此类推，arena[2]是2个，arena[3]是1个，相加共16个工作线程。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Lfalive</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lfalive.github.io/2022/02/15/JeMalloc/">https://lfalive.github.io/2022/02/15/JeMalloc/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lfalive.github.io" target="_blank">Lfalive's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/concurrency/">concurrency</a><a class="post-meta__tags" href="/tags/JeMalloc/">JeMalloc</a><a class="post-meta__tags" href="/tags/allocator/">allocator</a></div><div class="post_share"><div class="social-share" data-image="https://img.lfalive.top/JeMalloc/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.zhimg.com/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.zhimg.com/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.lfalive.top/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="https://img.lfalive.top/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/28/CS149-asst2/"><img class="prev-cover" src="https://img.lfalive.top/CS149-asst2/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CS149 - Programming Assignments 2</div></div></a></div><div class="next-post pull-right"><a href="/2022/02/21/Tceetree&amp;FlameGraph/"><img class="next-cover" src="https://img.lfalive.top/Tceetree&amp;FlameGraph/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">生成程序call graph和flame graph（C语言）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/01/19/CS140-project/" title="CS140 - Pintos Projects"><img class="cover" src="https://img.lfalive.top/CS140-project/cover.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-19</div><div class="title">CS140 - Pintos Projects</div></div></a></div><div><a href="/2022/01/28/CS149-asst2/" title="CS149 - Programming Assignments 2"><img class="cover" src="https://img.lfalive.top/CS149-asst2/cover.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-28</div><div class="title">CS149 - Programming Assignments 2</div></div></a></div><div><a href="/2022/01/06/Classic-Concurrency-Problems/" title="并发经典问题的实现"><img class="cover" src="https://img.lfalive.top/Classic-Concurrency-Problems/cover.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-06</div><div class="title">并发经典问题的实现</div></div></a></div><div><a href="/2022/01/04/LeetCode-Concurrency/" title="LeetCode多线程练习"><img class="cover" src="https://img.lfalive.top/LeetCode-Concurrency/cover.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-04</div><div class="title">LeetCode多线程练习</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://img.lfalive.top/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lfalive</div><div class="author-info__description">Studying at HUST.</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lfalive" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:542679373@qq.com" target="_blank" title="Email"><i class="far fa-envelope"></i></a><a class="social-icon" href="https://instagram.com/lfalive_cn" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a><a class="social-icon" href="https://steamcommunity.com/profiles/76561198452723298" target="_blank" title="Steam"><i class="fab fa-steam"></i></a><a class="social-icon" href="https://www.hust.edu.cn/" target="_blank" title="HUST"><i class="fas fa-graduation-cap"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BA%E6%96%87%EF%BC%882006%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">论文（2006）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%8B%E5%86%8C%EF%BC%88jemalloc-5-2-1%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">手册（jemalloc 5.2.1）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Standard-API"><span class="toc-number">3.1.</span> <span class="toc-text">Standard API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Non-standard-API"><span class="toc-number">3.2.</span> <span class="toc-text">Non-standard API</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%EF%BC%885-2-1%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">源码（5.2.1）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.1.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E7%89%B9%E6%80%A7"><span class="toc-number">4.2.</span> <span class="toc-text">重要特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">4.3.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#extent"><span class="toc-number">4.3.1.</span> <span class="toc-text">extent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#arena"><span class="toc-number">4.3.2.</span> <span class="toc-text">arena</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#size-class"><span class="toc-number">4.3.3.</span> <span class="toc-text">size class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#base"><span class="toc-number">4.3.4.</span> <span class="toc-text">base</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bin"><span class="toc-number">4.3.5.</span> <span class="toc-text">bin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#slab"><span class="toc-number">4.3.6.</span> <span class="toc-text">slab</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="toc-number">4.4.</span> <span class="toc-text">其他头文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jemalloc"><span class="toc-number">4.4.1.</span> <span class="toc-text">jemalloc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#atomic"><span class="toc-number">4.4.2.</span> <span class="toc-text">atomic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#background-thread"><span class="toc-number">4.4.3.</span> <span class="toc-text">background_thread</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tsd"><span class="toc-number">4.4.4.</span> <span class="toc-text">tsd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcache"><span class="toc-number">4.4.5.</span> <span class="toc-text">tcache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cache-bin"><span class="toc-number">4.4.6.</span> <span class="toc-text">cache_bin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pages"><span class="toc-number">4.4.7.</span> <span class="toc-text">pages</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0"><span class="toc-number">4.5.</span> <span class="toc-text">工具函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.6.</span> <span class="toc-text">算法实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E8%AE%BE%E8%AE%A1"><span class="toc-number">4.7.</span> <span class="toc-text">其他设计</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%EF%BC%882011%EF%BC%89%E5%92%8C%E8%A7%86%E9%A2%91%EF%BC%882015%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">博客（2011）和视频（2015）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">安装测试</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/21/Tceetree&amp;FlameGraph/" title="生成程序call graph和flame graph（C语言）"><img src="https://img.lfalive.top/Tceetree&amp;FlameGraph/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="生成程序call graph和flame graph（C语言）"/></a><div class="content"><a class="title" href="/2022/02/21/Tceetree&amp;FlameGraph/" title="生成程序call graph和flame graph（C语言）">生成程序call graph和flame graph（C语言）</a><time datetime="2022-02-20T16:00:00.000Z" title="发表于 2022-02-21 00:00:00">2022-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/15/JeMalloc/" title="内存分配器JeMalloc学习"><img src="https://img.lfalive.top/JeMalloc/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="内存分配器JeMalloc学习"/></a><div class="content"><a class="title" href="/2022/02/15/JeMalloc/" title="内存分配器JeMalloc学习">内存分配器JeMalloc学习</a><time datetime="2022-02-14T16:00:00.000Z" title="发表于 2022-02-15 00:00:00">2022-02-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/28/CS149-asst2/" title="CS149 - Programming Assignments 2"><img src="https://img.lfalive.top/CS149-asst2/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CS149 - Programming Assignments 2"/></a><div class="content"><a class="title" href="/2022/01/28/CS149-asst2/" title="CS149 - Programming Assignments 2">CS149 - Programming Assignments 2</a><time datetime="2022-01-27T16:00:00.000Z" title="发表于 2022-01-28 00:00:00">2022-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/19/CS140-project/" title="CS140 - Pintos Projects"><img src="https://img.lfalive.top/CS140-project/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CS140 - Pintos Projects"/></a><div class="content"><a class="title" href="/2022/01/19/CS140-project/" title="CS140 - Pintos Projects">CS140 - Pintos Projects</a><time datetime="2022-01-18T16:00:00.000Z" title="发表于 2022-01-19 00:00:00">2022-01-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/10/CSAPP-plus/" title="CSAPP相关若干问题的补充整理"><img src="https://img.lfalive.top/CSAPP-datalab/cover.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSAPP相关若干问题的补充整理"/></a><div class="content"><a class="title" href="/2022/01/10/CSAPP-plus/" title="CSAPP相关若干问题的补充整理">CSAPP相关若干问题的补充整理</a><time datetime="2022-01-09T16:00:00.000Z" title="发表于 2022-01-10 00:00:00">2022-01-10</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://img.lfalive.top/JeMalloc/cover.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By Lfalive</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>渝ICP备19015268号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://unpkg.zhimg.com/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.bootcdn.net/ajax/libs/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://unpkg.zhimg.com/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'twikoo-6gga64kp7c17697e',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.vemoji)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'twikoo-6gga64kp7c17697e',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      document.getElementById('twikoo-count').innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://unpkg.zhimg.com/twikoo@1.4.15/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="003zngCA4Gbjv4" data-server="tencent" data-type="song" data-fixed="true" data-mini="true" data-listFolded="false" data-loop="one" data-preload="none" data-autoplay="false" muted></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://unpkg.zhimg.com/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://unpkg.zhimg.com/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://img.lfalive.top/Aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://img.lfalive.top/Aplayer/APlayer.min.js"></script><script src="https://img.lfalive.top/Aplayer/Meting.min.js"></script><script src="https://unpkg.zhimg.com/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
